@@ -1,4 +1,4 @@
-CREATE DATABASE [IF NOT EXISTS] database_name;
+CREATE DATABASE carsalon;
 
 BEGIN;
   CREATE TABLE AccessoryTypes (
