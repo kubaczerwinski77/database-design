@@ -1,3 +1,5 @@
+CREATE DATABASE [IF NOT EXISTS] database_name;
+
 BEGIN;
   CREATE TABLE AccessoryTypes (
     id   uuid NOT NULL, 
