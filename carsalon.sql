@@ -53,7 +53,6 @@ CREATE TABLE Cars (
   FK_OriginCountries uuid NOT NULL, 
   FK_CarBodies       uuid NOT NULL, 
   FK_Varnishes       uuid NOT NULL, 
-  FK_OrderPositions  uuid NOT NULL, 
   FK_Users           uuid NOT NULL, 
   FK_SteeringWheels  uuid NOT NULL, 
   FK_CarStatuses     uuid NOT NULL, 
@@ -107,12 +106,6 @@ CREATE TABLE InsuranceTypes (
   type INT, 
   PRIMARY KEY (id));
 
-CREATE TABLE Invoices (
-  id            uuid NOT NULL, 
-  number        varchar(50) NOT NULL, 
-  issuance_date date,
-  PRIMARY KEY (id));
-
 CREATE TABLE Models (
   id                uuid NOT NULL, 
   name              varchar(100) NOT NULL UNIQUE, 
@@ -127,6 +120,7 @@ CREATE TABLE OrderPositions (
   amount            INT NOT NULL CHECK (amount > 0), 
   comments          varchar(100), 
   FK_Orders         uuid, 
+  FK_Cars           uuid, 
   FK_Services       uuid, 
   FK_CarAccessories uuid, 
   PRIMARY KEY (id));
@@ -152,12 +146,12 @@ CREATE TABLE OriginCountries (
   PRIMARY KEY (id));
 
 CREATE TABLE Payments (
-  id            uuid NOT NULL, 
-  amount        float4 NOT NULL CHECK (amount > 0), 
-  deadline_date date, 
-  payment_date  date NOT NULL, 
-  FK_Orders     uuid NOT NULL, 
-  FK_Invoices   uuid, 
+  id             uuid NOT NULL, 
+  amount         float4 NOT NULL CHECK (amount > 0), 
+  invoice_number varchar(100),
+  deadline_date  date, 
+  payment_date   date NOT NULL, 
+  FK_Orders      uuid NOT NULL, 
   PRIMARY KEY (id));
 
 CREATE TABLE Positions (
@@ -228,14 +222,14 @@ ALTER TABLE Configurations ADD CONSTRAINT FKConfigurat362700 FOREIGN KEY (FK_Car
 ALTER TABLE Configurations ADD CONSTRAINT FKConfigurat390732 FOREIGN KEY (FK_CarEquipments) REFERENCES CarEquipments (id);
 ALTER TABLE Cars ADD CONSTRAINT FKCars113140 FOREIGN KEY (FK_Users) REFERENCES Users (id);
 ALTER TABLE Employments ADD CONSTRAINT FKEmployment824388 FOREIGN KEY (FK_Positions) REFERENCES Positions (id);
-ALTER TABLE Payments ADD CONSTRAINT FKPayments990259 FOREIGN KEY (FK_Orders) REFERENCES Orders (id);
-ALTER TABLE OrderPositions ADD CONSTRAINT FKOrderPosit325198 FOREIGN KEY (FK_Orders) REFERENCES Orders (id);
-ALTER TABLE Cars ADD CONSTRAINT FKCars994326 FOREIGN KEY (FK_OrderPositions) REFERENCES OrderPositions (id);
+ALTER TABLE Payments ADD CONSTRAINT FKPayments990259 FOREIGN KEY (FK_Orders) REFERENCES Orders (id) ON DELETE CASCADE;
+ALTER TABLE OrderPositions ADD CONSTRAINT FKOrderPosit325198 FOREIGN KEY (FK_Orders) REFERENCES Orders (id) ON DELETE CASCADE;
+ALTER TABLE OrderPositions ADD CONSTRAINT FKOrderPositions994326 FOREIGN KEY (FK_Cars) REFERENCES Cars (id);
 ALTER TABLE OrderPositions ADD CONSTRAINT FKOrderPosit736371 FOREIGN KEY (FK_Services) REFERENCES Services (id);
 ALTER TABLE OrderPositions ADD CONSTRAINT FKOrderPosit255829 FOREIGN KEY (FK_CarAccessories) REFERENCES CarAccessories (id);
 ALTER TABLE CarAccessories ADD CONSTRAINT FKCarAccesso431015 FOREIGN KEY (FK_AccessoryTypes) REFERENCES AccessoryTypes (id);
-ALTER TABLE Orders ADD CONSTRAINT FKOrders860497 FOREIGN KEY (FK_Users) REFERENCES Users (id);
-ALTER TABLE Users ADD CONSTRAINT FKUsers15977 FOREIGN KEY (FK_Employments) REFERENCES Employments (id);
+ALTER TABLE Orders ADD CONSTRAINT FKOrders860497 FOREIGN KEY (FK_Users) REFERENCES Users (id) ON DELETE CASCADE;
+ALTER TABLE Users ADD CONSTRAINT FKUsers15977 FOREIGN KEY (FK_Employments) REFERENCES Employments (id) ON DELETE CASCADE;
 ALTER TABLE TestDrives ADD CONSTRAINT FKTestDrives181608 FOREIGN KEY (FK_Employee) REFERENCES Users (id);
 ALTER TABLE TestDrives ADD CONSTRAINT FKTestDrives886604 FOREIGN KEY (FK_Customer) REFERENCES Users (id);
 ALTER TABLE Insurances ADD CONSTRAINT FKInsurances512907 FOREIGN KEY (FK_InsuranceTypes) REFERENCES InsuranceTypes (id);
@@ -247,5 +241,19 @@ ALTER TABLE Models ADD CONSTRAINT FKModels754881 FOREIGN KEY (FK_CarDrivetrains)
 ALTER TABLE Models ADD CONSTRAINT FKModels117951 FOREIGN KEY (FK_Gearboxes) REFERENCES Gearboxes (id);
 ALTER TABLE Varnishes ADD CONSTRAINT FKVarnishes104773 FOREIGN KEY (FK_VarnishTypes) REFERENCES VarnishTypes (id);
 ALTER TABLE Users ADD CONSTRAINT FKUsers672487 FOREIGN KEY (FK_Sexes) REFERENCES Sexes (id);
-ALTER TABLE Payments ADD CONSTRAINT FKPayments767395 FOREIGN KEY (FK_Invoices) REFERENCES Invoices (id);
-ALTER TABLE Insurances ADD CONSTRAINT FKInsurances295724 FOREIGN KEY (FK_Orders) REFERENCES Orders (id);
+ALTER TABLE Insurances ADD CONSTRAINT FKInsurances295724 FOREIGN KEY (FK_Orders) REFERENCES Orders (id) ON DELETE CASCADE;
+
+-- create or replace function trigger_function()
+-- returns trigger as $$
+	
+-- 	begin
+-- 		if tg_op = 'INSERT' then
+--       raise exception
+-- 		end if;
+
+-- 		return null;
+-- 	end;
+-- $$ language plpgsql;
+
+-- create trigger nazwa_triggera before insert on TestDrives for each row execute procedure trigger_function();
+
