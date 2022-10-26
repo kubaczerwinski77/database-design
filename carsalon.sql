@@ -1,3 +1,5 @@
+CREATE DATABASE [IF NOT EXISTS] database_name;
+
 BEGIN;
   CREATE TABLE AccessoryTypes (
     id   uuid NOT NULL, 
@@ -230,6 +232,9 @@ BEGIN;
   ALTER TABLE OrderPositions ADD CONSTRAINT FKOrderPositions994326 FOREIGN KEY (FK_Cars) REFERENCES Cars (id);
   ALTER TABLE OrderPositions ADD CONSTRAINT FKOrderPosit736371 FOREIGN KEY (FK_Services) REFERENCES Services (id);
   ALTER TABLE OrderPositions ADD CONSTRAINT FKOrderPosit255829 FOREIGN KEY (FK_CarAccessories) REFERENCES CarAccessories (id);
+  ALTER TABLE OrderPositions ADD CHECK ((FK_Cars IS NOT NULL AND FK_Services IS NULL AND FK_CarAccessories IS NULL) OR 
+    (FK_Cars IS NULL AND FK_Services IS NOT NULL AND FK_CarAccessories IS NULL) OR (FK_Cars IS NULL AND FK_Services IS NULL AND 
+    FK_CarAccessories IS NOT NULL));
   ALTER TABLE CarAccessories ADD CONSTRAINT FKCarAccesso431015 FOREIGN KEY (FK_AccessoryTypes) REFERENCES AccessoryTypes (id);
   ALTER TABLE Orders ADD CONSTRAINT FKOrders860497 FOREIGN KEY (FK_Users) REFERENCES Users (id) ON DELETE CASCADE;
   ALTER TABLE Users ADD CONSTRAINT FKUsers15977 FOREIGN KEY (FK_Employments) REFERENCES Employments (id) ON DELETE CASCADE;
