@@ -12,7 +12,7 @@ CREATE TABLE CarAccessories (
   id                  uuid NOT NULL, 
   name                varchar(255) NOT NULL, 
   registration_number varchar(100) NOT NULL UNIQUE, 
-  price_per_unit      float4 NOT NULL, 
+  price_per_unit      float4 NOT NULL CHECK (price_per_unit > 0), 
   comments            varchar(255), 
   FK_AccessoryTypes   uuid NOT NULL, 
   PRIMARY KEY (id));
@@ -20,8 +20,8 @@ CREATE TABLE CarAccessories (
 CREATE TABLE CarBodies (
   id          uuid NOT NULL, 
   type        varchar(100), 
-  door_number INT NOT NULL, 
-  seat_number INT NOT NULL, 
+  door_number INT NOT NULL CHECK(door_number > 0), 
+  seat_number INT NOT NULL CHECK(seat_number > 0), 
   PRIMARY KEY (id));
 
 CREATE TABLE CarDrivetrains (
@@ -32,7 +32,7 @@ CREATE TABLE CarDrivetrains (
 CREATE TABLE CarEquipments (
   id    uuid NOT NULL, 
   name  varchar(255) NOT NULL, 
-  price float4, 
+  price float4 CHECK (price > 0), 
   code  INT NOT NULL UNIQUE, 
   PRIMARY KEY (id));
 
@@ -44,9 +44,9 @@ CREATE TABLE CarPowerSupplies (
 CREATE TABLE Cars (
   id                 uuid NOT NULL, 
   vin                varchar(17) NOT NULL UNIQUE, 
-  price              INT, 
+  price              float4 CHECK (price > 0), 
   production_date    date NOT NULL, 
-  mileage            INT NOT NULL, 
+  mileage            INT NOT NULL CHECK (mileage > 0), 
   description        varchar(255), 
   FK_Engines         uuid NOT NULL, 
   FK_Models          uuid NOT NULL, 
@@ -72,17 +72,17 @@ CREATE TABLE Configurations (
 
 CREATE TABLE Employments (
   id              uuid NOT NULL, 
-  employment_date date, 
-  dismissal_date  date, 
+  employment_date date NOT NULL, 
+  dismissal_date  date CHECK (dismissal_date > employment_date), 
   FK_Positions    uuid NOT NULL, 
   PRIMARY KEY (id));
 
 CREATE TABLE Engines (
   id                   uuid NOT NULL, 
   name                 INT NOT NULL, 
-  capacity             float4 NOT NULL, 
-  power                INT NOT NULL, 
-  torque               INT, 
+  capacity             float4 NOT NULL CHECK (capacity > 0), 
+  power                INT NOT NULL CHECK (power > 0), 
+  torque               INT CHECK (torque > 0), 
   cylinder_arrangement INT, 
   FK_CarPowerSupplies  uuid NOT NULL, 
   PRIMARY KEY (id));
@@ -94,8 +94,8 @@ CREATE TABLE Gearboxes (
 
 CREATE TABLE Insurances (
   id                uuid NOT NULL, 
-  policy_number     INT NOT NULL UNIQUE, 
-  commitment_period INT NOT NULL, 
+  policy_number     INT NOT NULL UNIQUE CHECK (policy_number > 0), 
+  commitment_period_in_days INT NOT NULL CHECK (commitment_period_in_days > 0), 
   conclusion_date   date NOT NULL, 
   comments          varchar(255), 
   FK_InsuranceTypes uuid NOT NULL, 
@@ -109,14 +109,13 @@ CREATE TABLE InsuranceTypes (
 
 CREATE TABLE Invoices (
   id            uuid NOT NULL, 
-  number        INT NOT NULL, 
-  issuance_date date, 
+  number        varchar(50) NOT NULL, 
+  issuance_date date,
   PRIMARY KEY (id));
 
 CREATE TABLE Models (
   id                uuid NOT NULL, 
   name              varchar(100) NOT NULL UNIQUE, 
-  gearbox_type      varchar(100) NOT NULL, 
   description       varchar(255), 
   FK_Brands         uuid NOT NULL, 
   FK_CarDrivetrains uuid NOT NULL, 
@@ -125,7 +124,7 @@ CREATE TABLE Models (
 
 CREATE TABLE OrderPositions (
   id                uuid NOT NULL, 
-  amount            INT NOT NULL, 
+  amount            INT NOT NULL CHECK (amount > 0), 
   comments          varchar(100), 
   FK_Orders         uuid, 
   FK_Services       uuid, 
@@ -136,7 +135,7 @@ CREATE TABLE Orders (
   id                  uuid NOT NULL, 
   number              varchar(50) NOT NULL, 
   date_of_application date NOT NULL, 
-  date_of_realisation date, 
+  date_of_realisation date CHECK (date_of_realisation >= date_of_application), 
   comments            varchar(255), 
   FK_Users            uuid NOT NULL, 
   FK_OrderStatuses    uuid NOT NULL, 
@@ -154,11 +153,11 @@ CREATE TABLE OriginCountries (
 
 CREATE TABLE Payments (
   id            uuid NOT NULL, 
-  amount        float4 NOT NULL, 
+  amount        float4 NOT NULL CHECK (amount > 0), 
   deadline_date date, 
   payment_date  date NOT NULL, 
   FK_Orders     uuid NOT NULL, 
-  FK_Invoices   uuid NOT NULL, 
+  FK_Invoices   uuid, 
   PRIMARY KEY (id));
 
 CREATE TABLE Positions (
@@ -170,12 +169,12 @@ CREATE TABLE Services (
   id          uuid NOT NULL, 
   name        varchar(50) NOT NULL UNIQUE, 
   description varchar(255), 
-  price       float4, 
+  price       float4 CHECK (price > 0), 
   PRIMARY KEY (id));
 
 CREATE TABLE Sexes (
   id     uuid NOT NULL, 
-  symbol char(1) NOT NULL, 
+  symbol varchar(1) NOT NULL, 
   PRIMARY KEY (id));
 
 CREATE TABLE SteeringWheels (
@@ -187,7 +186,7 @@ CREATE TABLE TestDrives (
   id          uuid NOT NULL, 
   "date"      date NOT NULL, 
   start_time  timestamp NOT NULL, 
-  end_time    timestamp NOT NULL, 
+  end_time    timestamp NOT NULL CHECK (end_time > start_time), 
   comments    varchar(255), 
   FK_Employee uuid NOT NULL, 
   FK_Customer uuid NOT NULL, 
@@ -200,7 +199,7 @@ CREATE TABLE Users (
   password       varchar(255) NOT NULL, 
   first_name     varchar(255), 
   last_name      varchar(255), 
-  date_of_birth  INT, 
+  date_of_birth  date CHECK(date_of_birth > '1900-01-01'), 
   phone_number   varchar(20), 
   pesel          varchar(11), 
   address        varchar(255), 
