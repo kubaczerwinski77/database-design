@@ -202,6 +202,14 @@ BEGIN;
     FK_Sexes       uuid NOT NULL, 
     PRIMARY KEY (id));
 
+  CREATE MATERIALIZED VIEW Employees AS
+    SELECT id FROM Users
+    WHERE FK_Employments IS NOT NULL;
+
+  CREATE MATERIALIZED VIEW Customers AS
+    SELECT id FROM Users
+    WHERE FK_Employments IS NULL;
+
   CREATE TABLE Varnishes (
     id              uuid NOT NULL, 
     name            varchar(100) NOT NULL, 
