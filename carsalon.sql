@@ -54,7 +54,7 @@ BEGIN;
     FK_OriginCountries uuid NOT NULL, 
     FK_CarBodies       uuid NOT NULL, 
     FK_Varnishes       uuid NOT NULL, 
-    FK_Users           uuid NOT NULL, 
+    FK_Customers       uuid NOT NULL, 
     FK_SteeringWheels  uuid NOT NULL, 
     FK_CarStatuses     uuid NOT NULL, 
     PRIMARY KEY (id));
@@ -70,11 +70,12 @@ BEGIN;
     FK_CarEquipments uuid NOT NULL, 
     PRIMARY KEY (id));
 
-  CREATE TABLE Employments (
+  CREATE TABLE Employees (
     id              uuid NOT NULL, 
     employment_date date NOT NULL, 
     dismissal_date  date CHECK (dismissal_date > employment_date), 
     FK_Positions    uuid NOT NULL, 
+    FK_Users        uuid NOT NULL, 
     PRIMARY KEY (id));
 
   CREATE TABLE Engines (
@@ -132,7 +133,7 @@ BEGIN;
     date_of_application date NOT NULL, 
     date_of_realisation date CHECK (date_of_realisation >= date_of_application), 
     comments            varchar(255), 
-    FK_Users            uuid NOT NULL, 
+    FK_Customers        uuid NOT NULL, 
     FK_OrderStatuses    uuid NOT NULL, 
     PRIMARY KEY (id));
 
@@ -183,8 +184,13 @@ BEGIN;
     start_time  timestamp NOT NULL, 
     end_time    timestamp NOT NULL CHECK (end_time > start_time), 
     comments    varchar(255), 
-    FK_Employee uuid NOT NULL, 
-    FK_Customer uuid NOT NULL, 
+    FK_Employees uuid NOT NULL, 
+    FK_Customers uuid NOT NULL, 
+    PRIMARY KEY (id));
+
+  CREATE TABLE Customers (
+    id           uuid NOT NULL, 
+    FK_Users     uuid NOT NULL, 
     PRIMARY KEY (id));
 
   CREATE TABLE Users (
@@ -196,9 +202,8 @@ BEGIN;
     last_name      varchar(255), 
     date_of_birth  date CHECK(date_of_birth > '1900-01-01'), 
     phone_number   varchar(20), 
-    pesel          varchar(11), 
+    pesel          varchar(11),
     address        varchar(255), 
-    FK_Employments uuid, 
     FK_Sexes       uuid NOT NULL, 
     PRIMARY KEY (id));
 
@@ -223,8 +228,8 @@ BEGIN;
   ALTER TABLE Cars ADD FOREIGN KEY (FK_Varnishes) REFERENCES Varnishes (id);
   ALTER TABLE Configurations ADD FOREIGN KEY (FK_Cars) REFERENCES Cars (id);
   ALTER TABLE Configurations ADD FOREIGN KEY (FK_CarEquipments) REFERENCES CarEquipments (id);
-  ALTER TABLE Cars ADD FOREIGN KEY (FK_Users) REFERENCES Users (id);
-  ALTER TABLE Employments ADD FOREIGN KEY (FK_Positions) REFERENCES Positions (id);
+  ALTER TABLE Cars ADD FOREIGN KEY (FK_Customers) REFERENCES Customers (id);
+  ALTER TABLE Employees ADD FOREIGN KEY (FK_Users) REFERENCES Users (id);
   ALTER TABLE Payments ADD FOREIGN KEY (FK_Orders) REFERENCES Orders (id) ON DELETE CASCADE;
   ALTER TABLE OrderPositions ADD FOREIGN KEY (FK_Orders) REFERENCES Orders (id) ON DELETE CASCADE;
   ALTER TABLE OrderPositions ADD FOREIGN KEY (FK_Cars) REFERENCES Cars (id);
@@ -234,10 +239,9 @@ BEGIN;
     (FK_Cars IS NULL AND FK_Services IS NOT NULL AND FK_CarAccessories IS NULL) OR (FK_Cars IS NULL AND FK_Services IS NULL AND 
     FK_CarAccessories IS NOT NULL));
   ALTER TABLE CarAccessories ADD FOREIGN KEY (FK_AccessoryTypes) REFERENCES AccessoryTypes (id);
-  ALTER TABLE Orders ADD FOREIGN KEY (FK_Users) REFERENCES Users (id) ON DELETE CASCADE;
-  ALTER TABLE Users ADD FOREIGN KEY (FK_Employments) REFERENCES Employments (id) ON DELETE CASCADE;
-  ALTER TABLE TestDrives ADD FOREIGN KEY (FK_Employee) REFERENCES Users (id);
-  ALTER TABLE TestDrives ADD FOREIGN KEY (FK_Customer) REFERENCES Users (id);
+  ALTER TABLE Orders ADD FOREIGN KEY (FK_Customers) REFERENCES Customers (id) ON DELETE CASCADE;
+  ALTER TABLE TestDrives ADD FOREIGN KEY (FK_Employees) REFERENCES Employees (id);
+  ALTER TABLE TestDrives ADD FOREIGN KEY (FK_Customers) REFERENCES Customers (id);
   ALTER TABLE Insurances ADD FOREIGN KEY (FK_InsuranceTypes) REFERENCES InsuranceTypes (id);
   ALTER TABLE Orders ADD FOREIGN KEY (FK_OrderStatuses) REFERENCES OrderStatuses (id);
   ALTER TABLE Engines ADD FOREIGN KEY (FK_CarPowerSupplies) REFERENCES CarPowerSupplies (id);
@@ -247,8 +251,10 @@ BEGIN;
   ALTER TABLE Models ADD FOREIGN KEY (FK_Gearboxes) REFERENCES Gearboxes (id);
   ALTER TABLE Varnishes ADD FOREIGN KEY (FK_VarnishTypes) REFERENCES VarnishTypes (id);
   ALTER TABLE Users ADD FOREIGN KEY (FK_Sexes) REFERENCES Sexes (id);
+  ALTER TABLE Employees ADD FOREIGN KEY (FK_Positions) REFERENCES Positions (id);
   ALTER TABLE Insurances ADD FOREIGN KEY (FK_Orders) REFERENCES Orders (id) ON DELETE CASCADE;
 COMMIT;
+
 -- create or replace function trigger_function()
 -- returns trigger as $$
 	
