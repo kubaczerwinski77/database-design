@@ -44,7 +44,7 @@ BEGIN;
 
   CREATE TABLE Cars (
     id                 uuid NOT NULL, 
-    vin                varchar(17) NOT NULL UNIQUE, 
+    vin                varchar(17) NOT NULL UNIQUE CHECK (LENGTH(vin) = 17),
     price              float4 CHECK (price > 0), 
     production_date    date NOT NULL, 
     mileage            INT NOT NULL CHECK (mileage > 0), 
@@ -80,7 +80,7 @@ BEGIN;
 
   CREATE TABLE Engines (
     id                   uuid NOT NULL, 
-    name                 INT NOT NULL, 
+    name                 varchar(50) NOT NULL, 
     capacity             float4 NOT NULL CHECK (capacity > 0), 
     power                INT NOT NULL CHECK (power > 0), 
     torque               INT CHECK (torque > 0), 
@@ -203,7 +203,7 @@ BEGIN;
     last_name      varchar(255), 
     date_of_birth  date CHECK(date_of_birth > '1900-01-01'), 
     phone_number   varchar(20), 
-    pesel          varchar(11),
+    pesel          varchar(11) CHECK (LENGTH(pesel) = 11),
     address        varchar(255), 
     FK_Sexes       uuid NOT NULL, 
     PRIMARY KEY (id));
