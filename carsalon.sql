@@ -229,7 +229,8 @@ BEGIN;
   ALTER TABLE Configurations ADD FOREIGN KEY (FK_Cars) REFERENCES Cars (id);
   ALTER TABLE Configurations ADD FOREIGN KEY (FK_CarEquipments) REFERENCES CarEquipments (id);
   ALTER TABLE Cars ADD FOREIGN KEY (FK_Customers) REFERENCES Customers (id);
-  ALTER TABLE Employees ADD FOREIGN KEY (FK_Users) REFERENCES Users (id);
+  ALTER TABLE Employees ADD FOREIGN KEY (FK_Users) REFERENCES Users (id) ON DELETE CASCADE;
+  ALTER TABLE Customers ADD FOREIGN KEY (FK_Users) REFERENCES Users (id) ON DELETE CASCADE;
   ALTER TABLE Payments ADD FOREIGN KEY (FK_Orders) REFERENCES Orders (id) ON DELETE CASCADE;
   ALTER TABLE OrderPositions ADD FOREIGN KEY (FK_Orders) REFERENCES Orders (id) ON DELETE CASCADE;
   ALTER TABLE OrderPositions ADD FOREIGN KEY (FK_Cars) REFERENCES Cars (id);
@@ -254,18 +255,3 @@ BEGIN;
   ALTER TABLE Employees ADD FOREIGN KEY (FK_Positions) REFERENCES Positions (id);
   ALTER TABLE Insurances ADD FOREIGN KEY (FK_Orders) REFERENCES Orders (id) ON DELETE CASCADE;
 COMMIT;
-
--- create or replace function trigger_function()
--- returns trigger as $$
-	
--- 	begin
--- 		if tg_op = 'INSERT' then
---       raise exception
--- 		end if;
-
--- 		return null;
--- 	end;
--- $$ language plpgsql;
-
--- create trigger nazwa_triggera before insert on TestDrives for each row execute procedure trigger_function();
-
