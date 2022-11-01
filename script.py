@@ -63,17 +63,20 @@ def generateSql(count,table_name,**kwargs):
 
 
 def generate_uuids(count):
-    uuids=[]
-    for i in range(count):
-        uuids.append(uuid.uuid4())
-    return uuids
-
-uuids= generate_uuids(10)
-types=['rwd','fwd','4wd']
-test_ints = [1,2,3,4,5]
+    uuids=set([])
+    while(len(uuids)<count):
+        uuids.add(str(uuid.uuid4()))
+    return list(uuids)
 
 
-statements=generateSql(4,'Car_drivetrains',id=uuids,type=types)
+
+uuids= generate_uuids(3)
+names=["318i",'316i','320i']
+descriptions=['Small city Car']
+FK_car_drivetrains = get_foreign_keys('CarDrivetrains',cur)
+
+
+statements=generateSql(3,'Models',id=uuids,UNIQUE_name=names,description=descriptions,fk_cardrivetrains=FK_car_drivetrains)
 for statement in statements:
     cur.execute(statement)
 
