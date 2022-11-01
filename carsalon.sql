@@ -186,6 +186,7 @@ BEGIN;
     comments    varchar(255), 
     FK_Employees uuid NOT NULL, 
     FK_Customers uuid NOT NULL, 
+    FK_Cars uuid NOT NULL,
     PRIMARY KEY (id));
 
   CREATE TABLE Customers (
@@ -243,6 +244,7 @@ BEGIN;
   ALTER TABLE Orders ADD FOREIGN KEY (FK_Customers) REFERENCES Customers (id) ON DELETE CASCADE;
   ALTER TABLE TestDrives ADD FOREIGN KEY (FK_Employees) REFERENCES Employees (id);
   ALTER TABLE TestDrives ADD FOREIGN KEY (FK_Customers) REFERENCES Customers (id);
+  ALTER TABLE TestDrives ADD FOREIGN KEY (FK_Cars) REFERENCES Cars (id);
   ALTER TABLE Insurances ADD FOREIGN KEY (FK_InsuranceTypes) REFERENCES InsuranceTypes (id);
   ALTER TABLE Orders ADD FOREIGN KEY (FK_OrderStatuses) REFERENCES OrderStatuses (id);
   ALTER TABLE Engines ADD FOREIGN KEY (FK_CarPowerSupplies) REFERENCES CarPowerSupplies (id);
