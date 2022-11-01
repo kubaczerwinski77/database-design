@@ -63,7 +63,7 @@ def generateSql(count,table_name,**kwargs):
 
 
 def generate_uuids(count):
-    uuids=set([])
+    uuids=set()
     while(len(uuids)<count):
         uuids.add(str(uuid.uuid4()))
     return list(uuids)
