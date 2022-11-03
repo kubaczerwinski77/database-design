@@ -45,8 +45,11 @@ def generate_pesels(count):
 
 def generate_uuids(count):
     uuids=set()
+    i=0
     while(len(uuids)<count):
         uuids.add(str(uuid.uuid4()))
+        i+=1
+        print(i)
     return list(uuids)
 
 def generate_equipment_codes(count):
