@@ -22,7 +22,7 @@ def generate_strings(length,min,max):
     while (len(s) < length):
         s.add(''.join(random.sample(alphabet,random.randrange(min,max))))
     return list(s)
-
+#todo fix
 def generate_timestamps(count,start,stop):
         return [f"{(random.randrange(start, stop))}-{random.randrange(1, 12)}-{random.randrange(1, 27)} {random.randrange(1,24)}:{random.randrange(1,60)}:{random.randrange(1,60)}" for x in range(count)]
 
@@ -32,7 +32,7 @@ def generate_vins(Count):
     while (len(s) < Count):
         s.add(''.join(random.sample(alphabet,17)))
     return list(s)
-
+#TODO fix
 def generate_dates(count,start,stop):
     return [f"{(random.randrange(start,stop))}-{random.randrange(1,12)}-{random.randrange(1,27)}" for x in range(count)]
 
@@ -49,7 +49,6 @@ def generate_uuids(count):
     while(len(uuids)<count):
         uuids.add(str(uuid.uuid4()))
         i+=1
-        print(i)
     return list(uuids)
 
 def generate_equipment_codes(count):
