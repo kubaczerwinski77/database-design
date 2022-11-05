@@ -16,7 +16,15 @@ def pop_random(list_of_values):
     return list_of_values.pop(random.randrange(len(list_of_values)))
 
 
-def add_value(column, values_list,prob):
+def add_value(column, values_list,prob, iteration):
+    if column == 'start_time' or column == 'end_time' or column == 'date_of_application':
+            return f"""'{values_list[iteration]}'"""
+    elif column == 'NULL_date_of_realisation':
+        if random.randrange(1, 10) < prob:
+                return """NULL"""
+        else:
+                return f"""'{values_list[iteration]}'"""
+    
     if column[:7] == 'UNIQUE_':
         val = pop_random(values_list)
         if type(val) is int:
@@ -31,7 +39,7 @@ def add_value(column, values_list,prob):
     return f"""'{val}'"""
 
 
-def generate_sql(table_name, **kwargs):
+def generate_sql(table_name, iteration, **kwargs):
     # kwargs are in form of column_name: list_of_values to be chosen at random and inserted ie. drivetrain:['rwd','fwd']
     # if column should have only unique values then name the column UNIQUE_column_name such as UNIQUE_type
     null_probability=3
@@ -52,7 +60,7 @@ def generate_sql(table_name, **kwargs):
     sql += ') VALUES('
 
     for key, item in kwargs.items():
-        sql += add_value(key, item,null_probability) + ','
+        sql += add_value(key, item,null_probability, iteration) + ','
     sql = sql[:-1]
     sql += ');'
 
@@ -82,7 +90,7 @@ def csv_to_list(filename):
 
 def insert(table_name, count, **kwargs):
     for i in range(count):
-        statement = generate_sql(table_name, **kwargs)
+        statement = generate_sql(table_name, i, **kwargs)
         try:
             cur.execute(statement)
             print(table_name)
@@ -268,7 +276,7 @@ def insert_users(count):
     passwords = DataGenerators.generate_strings(count, 6, 19)
     first_names = csv_to_list('data/Names.csv')
     last_names = csv_to_list('data/Surnames.csv')
-    births = DataGenerators.generate_dates(count, 1967, 2000)
+    births = DataGenerators.generate_dates(count, '1967-1-1', '2000-1-1')
     phones = DataGenerators.generate_phones(count)
     pesels = DataGenerators.generate_pesels(count)
     addresses = csv_to_list('data/addresses.csv')
@@ -309,8 +317,8 @@ def insert_customers(count):
 # Employees
 def insert_employees(count):
     uuids = DataGenerators.generate_uuids(count)
-    employment_dates = DataGenerators.generate_dates(count, 1980, 2011)
-    dismissals_dates = DataGenerators.generate_dates(count // 4, 2015, 2022)
+    employment_dates = DataGenerators.generate_dates(count, '1980-1-1', '2011-1-1')
+    dismissals_dates = DataGenerators.generate_dates(count // 4, '2015-1-1', '2022-1-1')
     fk_positions = get_foreign_keys('Positions', cur)
     fk_users = get_foreign_keys('Users', cur)
     insert('Employees', count, UNIQUE_id=uuids, employment_date=employment_dates,
@@ -322,7 +330,7 @@ def insert_cars(count):
     uuids = DataGenerators.generate_uuids(count)
     vins = DataGenerators.generate_vins(count)
     prices = DataGenerators.generate_floats(count // 2, 1000, 100000)
-    production_dates = DataGenerators.generate_dates(count, 1968, 2022)
+    production_dates = DataGenerators.generate_dates(count, '1968-1-1', '2022-1-1')
     mileages = DataGenerators.generate_ints(count, 1, 100000)
     descriptions = ["new", 'used', 'grandma drove to church']
     fk_engines = get_foreign_keys('Engines', cur)
@@ -354,8 +362,8 @@ def insert_configurations(count):
 def insert_orders(count):
     uuids = DataGenerators.generate_uuids(count)
     numbers = DataGenerators.generate_strings(count, 8, 20)
-    dates_of_applications = DataGenerators.generate_dates(count, 2018, 2019)
-    dates_of_realisations = DataGenerators.generate_dates(count, 2020, 2022)  # TODO na pewno to poprawic
+    dates_of_applications = DataGenerators.generate_dates(count, '2018-1-1', '2019-1-1')
+    dates_of_realisations = DataGenerators.generate_end_dates(dates_of_applications, max_days=30) 
     comments = ['lost in delivery', 'unavaliable at the moment', ' delivery from china', 'must be manufactured first']
     fk_order_statuses = get_foreign_keys('OrderStatuses', cur)
     fk_customers = get_foreign_keys('Customers', cur)
@@ -380,15 +388,15 @@ def insert_order_positions(count):
     for i in range(count):
         r = random.randrange(1, 3)
         if r == 1:
-            statement = generate_sql('OrderPositions', UNIQUE_id=uuids, amount=amounts, NULL_comments=comments,
+            statement = generate_sql('OrderPositions', i,  UNIQUE_id=uuids, amount=amounts, NULL_comments=comments,
                                      FK_Orders=fk_orders, NULL_FK_Cars=fk_cars, NULL_FK_Services=fk_services,
                                      FK_CarAccessories=fk_car_accessories)
         elif r == 2:
-            statement = generate_sql('OrderPositions', UNIQUE_id=uuids, amount=amounts, NULL_comments=comments,
+            statement = generate_sql('OrderPositions', i,  UNIQUE_id=uuids, amount=amounts, NULL_comments=comments,
                                      FK_Orders=fk_orders, NULL_FK_Cars=fk_cars, FK_Services=fk_services,
                                      NULL_FK_CarAccessories=fk_car_accessories)
         else:
-            statement = generate_sql('OrderPositions', UNIQUE_id=uuids, amount=amounts, NULL_comments=comments,
+            statement = generate_sql('OrderPositions', i, UNIQUE_id=uuids, amount=amounts, NULL_comments=comments,
                                      FK_Orders=fk_orders, FK_Cars=fk_cars, NULL_FK_Services=fk_services,
                                      NULL_FK_CarAccessories=fk_car_accessories)
         try:
@@ -403,7 +411,7 @@ def insert_insurances(count):
     uuids = DataGenerators.generate_uuids(count)
     policy_number = DataGenerators.generate_ints(count, 100, 10000000)
     commitments = DataGenerators.generate_ints(count, 1, 700)
-    conclusions = DataGenerators.generate_dates(count, 2015, 2022)
+    conclusions = DataGenerators.generate_dates(count, '2015-1-1', '2022-1-1')
     comments = ['bought with car', 'witout discounts', 'SalePakage']
     fk_insurance_types = get_foreign_keys('InsuranceTypes', cur)
     fk_orders = get_foreign_keys('Orders', cur)
@@ -416,8 +424,8 @@ def insert_payments(count):
     uuids = DataGenerators.generate_uuids(count)
     amounts = DataGenerators.generate_floats(count, 1, 100000)
     invoices = DataGenerators.generate_strings(count, 12, 16)
-    deadlines = DataGenerators.generate_dates(count, 2018, 2019)
-    payment_dates = DataGenerators.generate_dates(count, 2020, 2021)
+    payment_dates = DataGenerators.generate_dates(count, '2019-1-1', '2020-1-1')
+    deadlines = DataGenerators.generate_end_dates(payment_dates, max_days=30)
     fk_orders = get_foreign_keys('Orders', cur)
     insert('Payments', count, UNIQUE_id=uuids, amount=amounts, NULL_invoice_number=invoices,
            NULL_deadline_date=deadlines, payment_date=payment_dates, FK_Orders=fk_orders)
@@ -425,9 +433,9 @@ def insert_payments(count):
 
 def insert_test_drives(count):
     uuids = DataGenerators.generate_uuids(count)
-    date = DataGenerators.generate_dates(count, 2015, 2022)
-    start_times = DataGenerators.generate_timestamps(count, 2018, 2019)
-    end_times = DataGenerators.generate_timestamps(count, 2020, 2022)
+    date = DataGenerators.generate_dates(count, '2015-1-1', '2022-1-1')
+    start_times = DataGenerators.generate_timestamps(count, '2015-1-1 12:00:00', '2022-1-1 12:00:00')
+    end_times = DataGenerators.generate_end_timestamps(start_times, max_minutes=180)
     comments = ['car crashed', 'driver caused accident', 'custromer didnt attend']
     fk_employees = get_foreign_keys('Employees', cur)
     fk_customers = get_foreign_keys("Customers", cur)
