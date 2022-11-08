@@ -27,7 +27,7 @@ BEGIN;
 
   CREATE TABLE CarDrivetrains (
     id   uuid NOT NULL, 
-    type varchar(255) NOT NULL, 
+    type varchar(255) NOT NULL UNIQUE,
     PRIMARY KEY (id));
 
   CREATE TABLE CarEquipments (
@@ -39,7 +39,7 @@ BEGIN;
 
   CREATE TABLE CarPowerSupplies (
     id   uuid NOT NULL, 
-    type varchar(100) NOT NULL, 
+    type varchar(100) NOT NULL UNIQUE,
     PRIMARY KEY (id));
 
   CREATE TABLE Cars (
@@ -61,7 +61,7 @@ BEGIN;
 
   CREATE TABLE CarStatuses (
     id     uuid NOT NULL,
-    status varchar(255) NOT NULL,
+    status varchar(255) NOT NULL UNIQUE,
     PRIMARY KEY (id));
 
   CREATE TABLE Configurations (
@@ -84,13 +84,13 @@ BEGIN;
     capacity             float4 NOT NULL CHECK (capacity > 0),
     power                INT NOT NULL CHECK (power > 0),
     torque               INT CHECK (torque > 0),
-    cylinder_arrangement INT,
+    cylinder_arrangement varchar(50),
     FK_CarPowerSupplies  uuid NOT NULL,
     PRIMARY KEY (id));
 
   CREATE TABLE Gearboxes (
     id   uuid NOT NULL,
-    type varchar(255) NOT NULL,
+    type varchar(255) NOT NULL UNIQUE,
     PRIMARY KEY (id));
 
   CREATE TABLE Insurances (
@@ -129,7 +129,7 @@ BEGIN;
 
   CREATE TABLE Orders (
     id                  uuid NOT NULL,
-    number              varchar(50) NOT NULL,
+    number              varchar(50) NOT NULL UNIQUE,
     date_of_application date NOT NULL,
     date_of_realisation date CHECK (date_of_realisation >= date_of_application),
     comments            varchar(255),
@@ -170,12 +170,12 @@ BEGIN;
 
   CREATE TABLE Sexes (
     id     uuid NOT NULL,
-    symbol varchar(1) NOT NULL,
+    symbol varchar(1) NOT NULL UNIQUE,
     PRIMARY KEY (id));
 
   CREATE TABLE SteeringWheels (
     id   uuid NOT NULL,
-    type varchar(255) NOT NULL,
+    type varchar(255) NOT NULL UNIQUE,
     PRIMARY KEY (id));
 
   CREATE TABLE TestDrives (
@@ -210,14 +210,14 @@ BEGIN;
 
   CREATE TABLE Varnishes (
     id              uuid NOT NULL,
-    name            varchar(100) NOT NULL,
-    code            varchar(50) NOT NULL,
+    name            varchar(100) NOT NULL UNIQUE,
+    code            varchar(50) NOT NULL UNIQUE,
     FK_VarnishTypes uuid NOT NULL,
     PRIMARY KEY (id));
 
   CREATE TABLE VarnishTypes (
     id   uuid NOT NULL,
-    type varchar(100) NOT NULL,
+    type varchar(100) NOT NULL UNIQUE,
     PRIMARY KEY (id));
 COMMIT;
 

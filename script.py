@@ -476,7 +476,6 @@ def run():
     insert_insurances(30000)
     insert_payments(30000)
     insert_test_drives(30000)
-
 run()
 #
 # uuids = DataGenerators.generate_uuids(3)
