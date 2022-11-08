@@ -201,10 +201,10 @@ def insert_gearboxes():
 
 
 def insert_insurance_types():
-    types = DataGenerators.generate_ints(10, 1, 20)
+    types = ['oc','ac','assistance']
     count = len(types)
     uuids = DataGenerators.generate_uuids(count)
-    insert('InsuranceTypes', count, UNIQUE_id=uuids, type=types)
+    insert('InsuranceTypes', count, UNIQUE_id=uuids, UNIQUE_type=types)
 
 
 def insert_models():
@@ -433,7 +433,6 @@ def insert_payments(count):
 
 def insert_test_drives(count):
     uuids = DataGenerators.generate_uuids(count)
-    date = DataGenerators.generate_dates(count, '2015-1-1', '2022-1-1')
     start_times = DataGenerators.generate_timestamps(count, '2015-1-1 12:00:00', '2022-1-1 12:00:00')
     end_times = DataGenerators.generate_end_timestamps(start_times, max_minutes=180)
     comments = ['car crashed', 'driver caused accident', 'custromer didnt attend']
@@ -441,7 +440,7 @@ def insert_test_drives(count):
     fk_customers = get_foreign_keys("Customers", cur)
     fk_cars = get_foreign_keys('Cars', cur)
 
-    insert('TestDrives',count,UNIQUE_id=uuids, date=date, start_time=start_times, end_time=end_times,
+    insert('TestDrives',count,UNIQUE_id=uuids, start_time=start_times, end_time=end_times,
                                  NULL_comments=comments, FK_Employees=fk_employees, FK_Customers=fk_customers,
                                  FK_Cars=fk_cars)
 

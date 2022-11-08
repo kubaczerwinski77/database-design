@@ -105,7 +105,7 @@ BEGIN;
 
   CREATE TABLE InsuranceTypes (
     id   uuid NOT NULL,
-    type INT,
+    type varchar(50) UNIQUE ,
     PRIMARY KEY (id));
 
   CREATE TABLE Models (
@@ -180,7 +180,6 @@ BEGIN;
 
   CREATE TABLE TestDrives (
     id          uuid NOT NULL,
-    "date"      date NOT NULL,
     start_time  timestamp NOT NULL,
     end_time    timestamp NOT NULL CHECK (end_time > start_time),
     comments    varchar(255),
