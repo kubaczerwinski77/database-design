@@ -12,7 +12,7 @@
 
 7. top 5 najczęściej sprzedawanych marek samochodów
 
-8. klienci, którzy zrezygnowali z zamówienia w ostatnim miesiącu
+8. klienci, którzy zrezygnowali z zamówienia złożonego w ostatnim miesiącu
 
 9. Średnia wartość zamówienia
 

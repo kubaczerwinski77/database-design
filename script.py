@@ -223,7 +223,7 @@ def insert_order_statuses():
     statuses = csv_to_list('data/order_statuses.csv')
     count = len(statuses)
     uuids = DataGenerators.generate_uuids(count)
-    insert('OrderStatuses', count, UNIQUE_id=uuids, status=statuses)
+    insert('OrderStatuses', count, UNIQUE_id=uuids, UNIQUE_status=statuses)
 
 
 def insert_origin_countries():
@@ -317,7 +317,7 @@ def insert_customers(count):
 # Employees
 def insert_employees(count):
     uuids = DataGenerators.generate_uuids(count)
-    employment_dates = DataGenerators.generate_dates(count, '1980-1-1', '2011-1-1')
+    employment_dates = DataGenerators.generate_dates(count, '1980-1-1', '2015-1-1')
     dismissals_dates = DataGenerators.generate_dates(count // 4, '2015-1-1', '2022-1-1')
     fk_positions = get_foreign_keys('Positions', cur)
     fk_users = get_foreign_keys('Users', cur)
@@ -362,7 +362,7 @@ def insert_configurations(count):
 def insert_orders(count):
     uuids = DataGenerators.generate_uuids(count)
     numbers = DataGenerators.generate_strings(count, 8, 20)
-    dates_of_applications = DataGenerators.generate_dates(count, '2018-1-1', '2019-1-1')
+    dates_of_applications = DataGenerators.generate_dates(count, '2018-1-1', '2022-11-10')
     dates_of_realisations = DataGenerators.generate_end_dates(dates_of_applications, max_days=30) 
     comments = ['lost in delivery', 'unavaliable at the moment', ' delivery from china', 'must be manufactured first']
     fk_order_statuses = get_foreign_keys('OrderStatuses', cur)
@@ -386,7 +386,7 @@ def insert_order_positions(count):
     fk_car_accessories = get_foreign_keys('CarAccessories', cur)
 
     for i in range(count):
-        r = random.randrange(1, 3)
+        r = random.randint(1, 3)
         if r == 1:
             statement = generate_sql('OrderPositions', i,  UNIQUE_id=uuids, amount=amounts, NULL_comments=comments,
                                      FK_Orders=fk_orders, NULL_FK_Cars=fk_cars, NULL_FK_Services=fk_services,
@@ -405,6 +405,7 @@ def insert_order_positions(count):
         except Exception as err:
             print(err)
             conn.rollback()
+    conn.commit()
 
 
 def insert_insurances(count):

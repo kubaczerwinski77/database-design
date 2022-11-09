@@ -139,7 +139,7 @@ BEGIN;
 
   CREATE TABLE OrderStatuses (
     id     uuid NOT NULL,
-    status varchar(255) NOT NULL,
+    status varchar(255) NOT NULL UNIQUE,
     PRIMARY KEY (id));
 
   CREATE TABLE OriginCountries (
