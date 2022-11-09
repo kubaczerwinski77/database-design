@@ -54,7 +54,7 @@ BEGIN;
     FK_OriginCountries uuid NOT NULL,
     FK_CarBodies       uuid NOT NULL,
     FK_Varnishes       uuid NOT NULL,
-    FK_Customers       uuid NOT NULL,
+    FK_Customers       uuid,
     FK_SteeringWheels  uuid NOT NULL,
     FK_CarStatuses     uuid NOT NULL,
     PRIMARY KEY (id));
