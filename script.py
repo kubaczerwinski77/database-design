@@ -223,7 +223,7 @@ def insert_order_statuses():
     statuses = csv_to_list('data/order_statuses.csv')
     count = len(statuses)
     uuids = DataGenerators.generate_uuids(count)
-    insert('OrderStatuses', count, UNIQUE_id=uuids, status=statuses)
+    insert('OrderStatuses', count, UNIQUE_id=uuids, UNIQUE_status=statuses)
 
 
 def insert_origin_countries():
@@ -405,6 +405,7 @@ def insert_order_positions(count):
         except Exception as err:
             print(err)
             conn.rollback()
+    conn.commit()
 
 
 def insert_insurances(count):
