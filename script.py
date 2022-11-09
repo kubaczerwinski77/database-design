@@ -386,7 +386,7 @@ def insert_order_positions(count):
     fk_car_accessories = get_foreign_keys('CarAccessories', cur)
 
     for i in range(count):
-        r = random.randrange(1, 3)
+        r = random.randint(1, 3)
         if r == 1:
             statement = generate_sql('OrderPositions', i,  UNIQUE_id=uuids, amount=amounts, NULL_comments=comments,
                                      FK_Orders=fk_orders, NULL_FK_Cars=fk_cars, NULL_FK_Services=fk_services,
