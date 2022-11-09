@@ -27,7 +27,7 @@ BEGIN;
 
   CREATE TABLE CarDrivetrains (
     id   uuid NOT NULL, 
-    type varchar(255) NOT NULL, 
+    type varchar(255) NOT NULL UNIQUE,
     PRIMARY KEY (id));
 
   CREATE TABLE CarEquipments (
@@ -39,185 +39,184 @@ BEGIN;
 
   CREATE TABLE CarPowerSupplies (
     id   uuid NOT NULL, 
-    type varchar(100) NOT NULL, 
+    type varchar(100) NOT NULL UNIQUE,
     PRIMARY KEY (id));
 
   CREATE TABLE Cars (
     id                 uuid NOT NULL, 
     vin                varchar(17) NOT NULL UNIQUE CHECK (LENGTH(vin) = 17),
-    price              float4 CHECK (price > 0), 
-    production_date    date NOT NULL, 
-    mileage            INT NOT NULL CHECK (mileage > 0), 
-    description        varchar(255), 
-    FK_Engines         uuid NOT NULL, 
-    FK_Models          uuid NOT NULL, 
-    FK_OriginCountries uuid NOT NULL, 
-    FK_CarBodies       uuid NOT NULL, 
-    FK_Varnishes       uuid NOT NULL, 
-    FK_Customers       uuid NOT NULL, 
-    FK_SteeringWheels  uuid NOT NULL, 
-    FK_CarStatuses     uuid NOT NULL, 
+    price              float4 CHECK (price > 0),
+    production_date    date NOT NULL,
+    mileage            INT NOT NULL CHECK (mileage > 0),
+    description        varchar(255),
+    FK_Engines         uuid NOT NULL,
+    FK_Models          uuid NOT NULL,
+    FK_OriginCountries uuid NOT NULL,
+    FK_CarBodies       uuid NOT NULL,
+    FK_Varnishes       uuid NOT NULL,
+    FK_Customers       uuid,
+    FK_SteeringWheels  uuid NOT NULL,
+    FK_CarStatuses     uuid NOT NULL,
     PRIMARY KEY (id));
 
   CREATE TABLE CarStatuses (
-    id     uuid NOT NULL, 
-    status varchar(255) NOT NULL, 
+    id     uuid NOT NULL,
+    status varchar(255) NOT NULL UNIQUE,
     PRIMARY KEY (id));
 
   CREATE TABLE Configurations (
-    id               uuid NOT NULL, 
-    FK_Cars          uuid NOT NULL, 
-    FK_CarEquipments uuid NOT NULL, 
+    id               uuid NOT NULL,
+    FK_Cars          uuid NOT NULL,
+    FK_CarEquipments uuid NOT NULL,
     PRIMARY KEY (id));
 
   CREATE TABLE Employees (
-    id              uuid NOT NULL, 
-    employment_date date NOT NULL, 
-    dismissal_date  date CHECK (dismissal_date > employment_date), 
-    FK_Positions    uuid NOT NULL, 
-    FK_Users        uuid NOT NULL, 
+    id              uuid NOT NULL,
+    employment_date date NOT NULL,
+    dismissal_date  date CHECK (dismissal_date > employment_date),
+    FK_Positions    uuid NOT NULL,
+    FK_Users        uuid NOT NULL,
     PRIMARY KEY (id));
 
   CREATE TABLE Engines (
-    id                   uuid NOT NULL, 
-    name                 varchar(50) NOT NULL, 
-    capacity             float4 NOT NULL CHECK (capacity > 0), 
-    power                INT NOT NULL CHECK (power > 0), 
-    torque               INT CHECK (torque > 0), 
-    cylinder_arrangement INT, 
-    FK_CarPowerSupplies  uuid NOT NULL, 
+    id                   uuid NOT NULL,
+    name                 varchar(50) NOT NULL,
+    capacity             float4 NOT NULL CHECK (capacity > 0),
+    power                INT NOT NULL CHECK (power > 0),
+    torque               INT CHECK (torque > 0),
+    cylinder_arrangement varchar(50),
+    FK_CarPowerSupplies  uuid NOT NULL,
     PRIMARY KEY (id));
 
   CREATE TABLE Gearboxes (
-    id   uuid NOT NULL, 
-    type varchar(255) NOT NULL, 
+    id   uuid NOT NULL,
+    type varchar(255) NOT NULL UNIQUE,
     PRIMARY KEY (id));
 
   CREATE TABLE Insurances (
-    id                uuid NOT NULL, 
-    policy_number     INT NOT NULL UNIQUE CHECK (policy_number > 0), 
-    commitment_period_in_days INT NOT NULL CHECK (commitment_period_in_days > 0), 
-    conclusion_date   date NOT NULL, 
-    comments          varchar(255), 
-    FK_InsuranceTypes uuid NOT NULL, 
-    FK_Orders         uuid NOT NULL, 
+    id                uuid NOT NULL,
+    policy_number     INT NOT NULL UNIQUE CHECK (policy_number > 0),
+    commitment_period_in_days INT NOT NULL CHECK (commitment_period_in_days > 0),
+    conclusion_date   date NOT NULL,
+    comments          varchar(255),
+    FK_InsuranceTypes uuid NOT NULL,
+    FK_Orders         uuid NOT NULL,
     PRIMARY KEY (id));
 
   CREATE TABLE InsuranceTypes (
-    id   uuid NOT NULL, 
-    type INT, 
+    id   uuid NOT NULL,
+    type varchar(50) UNIQUE ,
     PRIMARY KEY (id));
 
   CREATE TABLE Models (
-    id                uuid NOT NULL, 
-    name              varchar(100) NOT NULL UNIQUE, 
-    description       varchar(255), 
-    FK_Brands         uuid NOT NULL, 
-    FK_CarDrivetrains uuid NOT NULL, 
-    FK_Gearboxes      uuid NOT NULL, 
+    id                uuid NOT NULL,
+    name              varchar(100) NOT NULL UNIQUE,
+    description       varchar(255),
+    FK_Brands         uuid NOT NULL,
+    FK_CarDrivetrains uuid NOT NULL,
+    FK_Gearboxes      uuid NOT NULL,
     PRIMARY KEY (id));
 
   CREATE TABLE OrderPositions (
-    id                uuid NOT NULL, 
-    amount            INT NOT NULL CHECK (amount > 0), 
-    comments          varchar(100), 
-    FK_Orders         uuid, 
-    FK_Cars           uuid, 
-    FK_Services       uuid, 
-    FK_CarAccessories uuid, 
+    id                uuid NOT NULL,
+    amount            INT NOT NULL CHECK (amount > 0),
+    comments          varchar(100),
+    FK_Orders         uuid,
+    FK_Cars           uuid,
+    FK_Services       uuid,
+    FK_CarAccessories uuid,
     PRIMARY KEY (id));
 
   CREATE TABLE Orders (
-    id                  uuid NOT NULL, 
-    number              varchar(50) NOT NULL, 
-    date_of_application date NOT NULL, 
-    date_of_realisation date CHECK (date_of_realisation >= date_of_application), 
-    comments            varchar(255), 
-    FK_Customers        uuid NOT NULL, 
-    FK_OrderStatuses    uuid NOT NULL, 
+    id                  uuid NOT NULL,
+    number              varchar(50) NOT NULL UNIQUE,
+    date_of_application date NOT NULL,
+    date_of_realisation date CHECK (date_of_realisation >= date_of_application),
+    comments            varchar(255),
+    FK_Customers        uuid NOT NULL,
+    FK_OrderStatuses    uuid NOT NULL,
     PRIMARY KEY (id));
 
   CREATE TABLE OrderStatuses (
-    id     uuid NOT NULL, 
-    status varchar(255) NOT NULL, 
+    id     uuid NOT NULL,
+    status varchar(255) NOT NULL,
     PRIMARY KEY (id));
 
   CREATE TABLE OriginCountries (
-    id   uuid NOT NULL, 
-    name varchar(100) NOT NULL UNIQUE, 
+    id   uuid NOT NULL,
+    name varchar(100) NOT NULL UNIQUE,
     PRIMARY KEY (id));
 
   CREATE TABLE Payments (
-    id             uuid NOT NULL, 
-    amount         float4 NOT NULL CHECK (amount > 0), 
+    id             uuid NOT NULL,
+    amount         float4 NOT NULL CHECK (amount > 0),
     invoice_number varchar(100),
-    deadline_date  date, 
-    payment_date   date NOT NULL, 
-    FK_Orders      uuid NOT NULL, 
+    deadline_date  date,
+    payment_date   date NOT NULL,
+    FK_Orders      uuid NOT NULL,
     PRIMARY KEY (id));
 
   CREATE TABLE Positions (
-    id   uuid NOT NULL, 
-    name varchar(100) NOT NULL UNIQUE, 
+    id   uuid NOT NULL,
+    name varchar(100) NOT NULL UNIQUE,
     PRIMARY KEY (id));
 
   CREATE TABLE Services (
-    id          uuid NOT NULL, 
-    name        varchar(50) NOT NULL UNIQUE, 
-    description varchar(255), 
-    price       float4 CHECK (price > 0), 
+    id          uuid NOT NULL,
+    name        varchar(50) NOT NULL UNIQUE,
+    description varchar(255),
+    price       float4 CHECK (price > 0),
     PRIMARY KEY (id));
 
   CREATE TABLE Sexes (
-    id     uuid NOT NULL, 
-    symbol varchar(1) NOT NULL, 
+    id     uuid NOT NULL,
+    symbol varchar(1) NOT NULL UNIQUE,
     PRIMARY KEY (id));
 
   CREATE TABLE SteeringWheels (
-    id   uuid NOT NULL, 
-    type varchar(255) NOT NULL, 
+    id   uuid NOT NULL,
+    type varchar(255) NOT NULL UNIQUE,
     PRIMARY KEY (id));
 
   CREATE TABLE TestDrives (
-    id          uuid NOT NULL, 
-    "date"      date NOT NULL, 
-    start_time  timestamp NOT NULL, 
-    end_time    timestamp NOT NULL CHECK (end_time > start_time), 
-    comments    varchar(255), 
-    FK_Employees uuid NOT NULL, 
-    FK_Customers uuid NOT NULL, 
+    id          uuid NOT NULL,
+    start_time  timestamp NOT NULL,
+    end_time    timestamp NOT NULL CHECK (end_time > start_time),
+    comments    varchar(255),
+    FK_Employees uuid NOT NULL,
+    FK_Customers uuid NOT NULL,
     FK_Cars uuid NOT NULL,
     PRIMARY KEY (id));
 
   CREATE TABLE Customers (
-    id           uuid NOT NULL, 
-    FK_Users     uuid NOT NULL, 
+    id           uuid NOT NULL,
+    FK_Users     uuid NOT NULL,
     PRIMARY KEY (id));
 
   CREATE TABLE Users (
-    id             uuid NOT NULL, 
-    username       varchar(50) NOT NULL UNIQUE, 
-    email          varchar(100) NOT NULL UNIQUE, 
-    password       varchar(255) NOT NULL, 
-    first_name     varchar(255), 
-    last_name      varchar(255), 
-    date_of_birth  date CHECK(date_of_birth > '1900-01-01'), 
-    phone_number   varchar(20), 
+    id             uuid NOT NULL,
+    username       varchar(50) NOT NULL UNIQUE,
+    email          varchar(100) NOT NULL UNIQUE,
+    password       varchar(255) NOT NULL,
+    first_name     varchar(255),
+    last_name      varchar(255),
+    date_of_birth  date CHECK(date_of_birth > '1900-01-01'),
+    phone_number   varchar(20),
     pesel          varchar(11) CHECK (LENGTH(pesel) = 11),
-    address        varchar(255), 
-    FK_Sexes       uuid NOT NULL, 
+    address        varchar(255),
+    FK_Sexes       uuid NOT NULL,
     PRIMARY KEY (id));
 
   CREATE TABLE Varnishes (
-    id              uuid NOT NULL, 
-    name            varchar(100) NOT NULL, 
-    code            varchar(50) NOT NULL, 
-    FK_VarnishTypes uuid NOT NULL, 
+    id              uuid NOT NULL,
+    name            varchar(100) NOT NULL UNIQUE,
+    code            varchar(50) NOT NULL UNIQUE,
+    FK_VarnishTypes uuid NOT NULL,
     PRIMARY KEY (id));
 
   CREATE TABLE VarnishTypes (
-    id   uuid NOT NULL, 
-    type varchar(100) NOT NULL, 
+    id   uuid NOT NULL,
+    type varchar(100) NOT NULL UNIQUE,
     PRIMARY KEY (id));
 COMMIT;
 
@@ -237,8 +236,8 @@ BEGIN;
   ALTER TABLE OrderPositions ADD FOREIGN KEY (FK_Cars) REFERENCES Cars (id);
   ALTER TABLE OrderPositions ADD FOREIGN KEY (FK_Services) REFERENCES Services (id);
   ALTER TABLE OrderPositions ADD FOREIGN KEY (FK_CarAccessories) REFERENCES CarAccessories (id);
-  ALTER TABLE OrderPositions ADD CHECK ((FK_Cars IS NOT NULL AND FK_Services IS NULL AND FK_CarAccessories IS NULL) OR 
-    (FK_Cars IS NULL AND FK_Services IS NOT NULL AND FK_CarAccessories IS NULL) OR (FK_Cars IS NULL AND FK_Services IS NULL AND 
+  ALTER TABLE OrderPositions ADD CHECK ((FK_Cars IS NOT NULL AND FK_Services IS NULL AND FK_CarAccessories IS NULL) OR
+    (FK_Cars IS NULL AND FK_Services IS NOT NULL AND FK_CarAccessories IS NULL) OR (FK_Cars IS NULL AND FK_Services IS NULL AND
     FK_CarAccessories IS NOT NULL));
   ALTER TABLE CarAccessories ADD FOREIGN KEY (FK_AccessoryTypes) REFERENCES AccessoryTypes (id);
   ALTER TABLE Orders ADD FOREIGN KEY (FK_Customers) REFERENCES Customers (id) ON DELETE CASCADE;
