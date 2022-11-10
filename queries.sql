@@ -28,7 +28,8 @@ WHERE OrderPositions.fk_caraccessories IS NULL;
 SELECT name
 FROM OriginCountries
 INNER JOIN Cars
-ON Cars.FK_OriginCountries = OriginCountries.id;
+ON Cars.FK_OriginCountries = OriginCountries.id
+GROUP BY name;
 
 --Query 5
 
@@ -85,3 +86,11 @@ join insurancetypes
 on insurancetypes.id = insurances.fk_insurancetypes 
 where date_part('year', age(insurances.conclusion_date)) < 1 
 group by insurancetypes.type;
+
+-- Query 12
+SELECT Customers.id, Users.first_name, Users.last_name, COUNT(Orders.id) AS Number, Payments.id
+FROM Customers JOIN Users ON Users.id = Customers.fk_users JOIN Orders ON Orders.FK_Customers = Customers.id LEFT JOIN Payments on Payments.FK_Orders = Orders.id
+WHERE Payments.id IS NULL
+GROUP BY Customers.id
+ORDER BY Number DESC;
+
