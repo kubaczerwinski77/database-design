@@ -19,8 +19,8 @@ ON Orders.FK_OrderStatuses = OrderStatuses.id
 WHERE OrderStatuses.status = 'awaiting payment';
 
 -- Query 3
-SELECT COUNT(*) FROM CarAccessories
-INNER JOIN OrderPositions 
+SELECT * FROM CarAccessories
+LEFT JOIN OrderPositions 
 ON CarAccessories.id = OrderPositions.fk_caraccessories
 WHERE OrderPositions.fk_caraccessories IS NULL;
 
@@ -28,7 +28,8 @@ WHERE OrderPositions.fk_caraccessories IS NULL;
 SELECT name
 FROM OriginCountries
 INNER JOIN Cars
-ON Cars.FK_OriginCountries = OriginCountries.id;
+ON Cars.FK_OriginCountries = OriginCountries.id
+GROUP BY name;
 
 --Query 5
 
@@ -49,7 +50,7 @@ GROUP BY name
 ORDER BY number ASC;
 
 -- Query 7
-select brands.name as "Brand name", count(*) as "Liczba sprzedanych" 
+select brands.name as "Brand name", count(*) as "Sold" 
 from brands 
 join models 
 on models.fk_brands = brands.id 
@@ -62,10 +63,14 @@ order by count(*) desc
 limit 5;
 
 -- Query 8
-SELECT Orders.number 
+SELECT Orders.number as "Order number", first_name, last_name, email
 FROM Orders
 INNER JOIN OrderStatuses
 ON Orders.FK_OrderStatuses = OrderStatuses.id
+INNER JOIN Customers
+ON Orders.FK_Customers = Customers.id
+INNER JOIN Users
+ON Customers.FK_Users = Users.id
 WHERE OrderStatuses.status = 'cancelled' AND (date_of_application >= current_date - interval '1' month
   AND date_of_application < current_date);
 
