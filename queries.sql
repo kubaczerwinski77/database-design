@@ -1,14 +1,12 @@
 -- Query 1
-SELECT Positions.name, COUNT(Employees.id) as number
-FROM Employees
-INNER JOIN Positions
-ON Employees.FK_Positions = Positions.id
-WHERE employment_date > current_date - interval '20' year
-GROUP BY Positions.name
-ORDER BY number ASC;
+SELECT Customers.id, Users.first_name, Users.last_name, Users.date_of_birth 
+FROM Customers 
+JOIN Users 
+ON Users.id = Customers.fk_users 
+WHERE date_part('year', age(Users.date_of_birth)) > 50;
 
 -- Query 2
-SELECT first_name, last_name, email, phone_number
+SELECT Orders.number, first_name, last_name, email, phone_number
 FROM Customers
 INNER JOIN Users
 ON Customers.FK_Users = Users.id
@@ -93,7 +91,13 @@ group by insurancetypes.type;
 
 -- Query 12
 SELECT Customers.id, Users.first_name, Users.last_name, COUNT(Orders.id) AS Number, Payments.id
-FROM Customers JOIN Users ON Users.id = Customers.fk_users JOIN Orders ON Orders.FK_Customers = Customers.id LEFT JOIN Payments on Payments.FK_Orders = Orders.id
+FROM Customers 
+JOIN Users 
+ON Users.id = Customers.fk_users 
+JOIN Orders 
+ON Orders.FK_Customers = Customers.id 
+LEFT JOIN Payments 
+on Payments.FK_Orders = Orders.id
 WHERE Payments.id IS NULL
 GROUP BY Customers.id
 ORDER BY Number DESC;
