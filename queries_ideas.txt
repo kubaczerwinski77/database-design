@@ -1,0 +1,39 @@
+1. Klienci w wieku powyżej 70
+
+2. Lista klientów z nieopłaconymi zamówieniami
+
+3. Lista akcesoriów niewykorzystanych w żadnych dotychczasowych zamówieniach.
+
+4. Kraje pochodzenia, z których są auta w salonie
+
+5. procent konkretnych statusów samochodów w stosunku do wszystkich dostępnych (x% bezwypadkowych, y% pierwszy właściciel itd.)
+
+6. zestawienie najrzadziej wybieranych usług
+
+7. top 5 najczęściej sprzedawanych marek samochodów
+
+8. klienci, którzy zrezygnowali z zamówienia złożonego w ostatnim miesiącu
+
+9. Średnia wartość zamówienia
+
+10. Pracownicy o stażu dłuższym niż 10 lat pogrupowani ze względu na stanowiska
+
+11. Ile i jakich ubezpieczeń sprzedano w poprzednim roku?
+
+12. Klienci z największą liczbą nieopłaconych zamówień
+
+13. Jaki procent wszystkich aut na sprzedaż stanowią auta na benzynę/ropę itd. (ze względu na konkretny typ zasilania)?
+
+14. Top 3 marek samochodów, najczęściej wybieranych przez klientów w wieku 25-40, 40-55, 55-70, 70+
+
+15. Średni czas trwania jazdy testowej kobiet i mężczyzn
+
+
+
+
+
+
+
+
+
+

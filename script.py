@@ -317,7 +317,7 @@ def insert_customers(count):
 # Employees
 def insert_employees(count):
     uuids = DataGenerators.generate_uuids(count)
-    employment_dates = DataGenerators.generate_dates(count, '1980-1-1', '2011-1-1')
+    employment_dates = DataGenerators.generate_dates(count, '1980-1-1', '2015-1-1')
     dismissals_dates = DataGenerators.generate_dates(count // 4, '2015-1-1', '2022-1-1')
     fk_positions = get_foreign_keys('Positions', cur)
     fk_users = get_foreign_keys('Users', cur)
@@ -362,7 +362,7 @@ def insert_configurations(count):
 def insert_orders(count):
     uuids = DataGenerators.generate_uuids(count)
     numbers = DataGenerators.generate_strings(count, 8, 20)
-    dates_of_applications = DataGenerators.generate_dates(count, '2018-1-1', '2019-1-1')
+    dates_of_applications = DataGenerators.generate_dates(count, '2018-1-1', '2022-11-10')
     dates_of_realisations = DataGenerators.generate_end_dates(dates_of_applications, max_days=30) 
     comments = ['lost in delivery', 'unavaliable at the moment', ' delivery from china', 'must be manufactured first']
     fk_order_statuses = get_foreign_keys('OrderStatuses', cur)
