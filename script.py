@@ -90,17 +90,18 @@ def csv_to_list(filename):
 
 def insert(table_name, count, **kwargs):
     for i in range(count):
+        if(i%1000==0):
+            print(i)
         statement = generate_sql(table_name, i, **kwargs)
         try:
             cur.execute(statement)
-            print(table_name)
+            conn.commit()
         except Exception as err:
             # pass exception to function
             print(err)
 
             # rollback the previous transaction before starting another
             conn.rollback()
-    conn.commit()
 
 
 # AccessoryTypes
@@ -471,11 +472,11 @@ def run():
     # insert_employees(200)
     # insert_cars(10000)
     # insert_configurations(300000)
-     insert_orders(1000000)
+    #insert_orders(1000000)
     # insert_order_positions(300000)
     # insert_insurances(30000)
     # insert_payments(30000)
-    # insert_test_drives(30000)
+     insert_test_drives(50000)
 run()
 #
 # uuids = DataGenerators.generate_uuids(3)
