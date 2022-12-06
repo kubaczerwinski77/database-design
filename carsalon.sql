@@ -105,7 +105,8 @@ BEGIN;
 
   CREATE TABLE InsuranceTypes (
     id   uuid NOT NULL,
-    type varchar(50) UNIQUE ,
+    type varchar(50) UNIQUE,
+    ratio float4,
     PRIMARY KEY (id));
 
   CREATE TABLE Models (
@@ -255,4 +256,5 @@ BEGIN;
   ALTER TABLE Users ADD FOREIGN KEY (FK_Sexes) REFERENCES Sexes (id);
   ALTER TABLE Employees ADD FOREIGN KEY (FK_Positions) REFERENCES Positions (id);
   ALTER TABLE Insurances ADD FOREIGN KEY (FK_Orders) REFERENCES Orders (id) ON DELETE CASCADE;
+  ALTER TABLE Cars ADD FOREIGN KEY (FK_Engines) REFERENCES Engines (id);
 COMMIT;
