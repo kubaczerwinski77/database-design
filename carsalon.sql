@@ -106,7 +106,8 @@ BEGIN;
 
   CREATE TABLE InsuranceTypes (
     id   uuid NOT NULL,
-    type varchar(50) UNIQUE ,
+    type varchar(50) UNIQUE,
+    ratio float4,
     PRIMARY KEY (id));
 
   CREATE TABLE Models (
