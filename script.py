@@ -1,6 +1,7 @@
 import random
 import csv
 import psycopg2
+import uuid
 import DataGenerators
 
 # connection to database
@@ -202,10 +203,24 @@ def insert_gearboxes():
 
 
 def insert_insurance_types():
-    types = ['oc','ac','assistance']
-    count = len(types)
-    uuids = DataGenerators.generate_uuids(count)
-    insert('InsuranceTypes', count, UNIQUE_id=uuids, UNIQUE_type=types)
+
+    uuid1 = uuid.uuid4()
+    st1=f'''INSERT INTO InsuranceTypes(id,ratio,type) VALUES ('{uuid1}','oc',0.08)'''
+
+    uuid2 = uuid.uuid4()
+    st2 = f'''INSERT INTO InsuranceTypes(id,ratio,type) VALUES ('{uuid2}','ac',0.1)'''
+
+    uuid3 = uuid.uuid4()
+    st3 = f'''INSERT INTO InsuranceTypes(id,ratio,type) VALUES ('{uuid3}','assistance',0.12)'''
+
+    try:
+        cur.execute(st1)
+        cur.execute(st2)
+        cur.execute(st3)
+        conn.commit()
+    except Exception as err:
+        print(err)
+        conn.rollback()
 
 
 def insert_models():

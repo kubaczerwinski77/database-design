@@ -90,6 +90,7 @@ BEGIN;
 
   CREATE TABLE Gearboxes (
     id   uuid NOT NULL,
+    ratio float(4),
     type varchar(255) NOT NULL UNIQUE,
     PRIMARY KEY (id));
 
