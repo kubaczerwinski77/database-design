@@ -412,7 +412,7 @@ def insert_order_positions(count):
                                      FK_Orders=fk_orders, NULL_FK_Cars=fk_cars, FK_Services=fk_services,
                                      NULL_FK_CarAccessories=fk_car_accessories)
         else:
-            statement = generate_sql('OrderPositions', i, UNIQUE_id=uuids, amount=1, NULL_comments=comments,
+            statement = generate_sql('OrderPositions', i, UNIQUE_id=uuids, amount=[1], NULL_comments=comments,
                                      FK_Orders=fk_orders, FK_Cars=fk_cars, NULL_FK_Services=fk_services,
                                      NULL_FK_CarAccessories=fk_car_accessories)
         try:
