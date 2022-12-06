@@ -205,13 +205,13 @@ def insert_gearboxes():
 def insert_insurance_types():
 
     uuid1 = uuid.uuid4()
-    st1=f'''INSERT INTO InsuranceTypes(id,ratio,type) VALUES ('{uuid1}','oc',0.08)'''
+    st1=f'''INSERT INTO InsuranceTypes(id,type,ratio) VALUES ('{uuid1}','oc',0.08)'''
 
     uuid2 = uuid.uuid4()
-    st2 = f'''INSERT INTO InsuranceTypes(id,ratio,type) VALUES ('{uuid2}','ac',0.1)'''
+    st2 = f'''INSERT INTO InsuranceTypes(id,type,ratio) VALUES ('{uuid2}','ac',0.1)'''
 
     uuid3 = uuid.uuid4()
-    st3 = f'''INSERT INTO InsuranceTypes(id,ratio,type) VALUES ('{uuid3}','assistance',0.12)'''
+    st3 = f'''INSERT INTO InsuranceTypes(id,type,ratio) VALUES ('{uuid3}','assistance',0.12)'''
 
     try:
         cur.execute(st1)
@@ -462,48 +462,37 @@ def insert_test_drives(count):
                                  FK_Cars=fk_cars)
 
 def run():
-    # insert_accessory_type()
-    # insert_brands()
-    # insert_car_accessories(100)
-    # insert_car_bodies(20)
-    # insert_car_drivetrains()
-    # insert_car_equipments(30)
-    # insert_car_power_supplies()
-    # insert_car_statuses()
-    # insert_engines(21)
-    # insert_gearboxes()
-    # insert_insurance_types()
-    # insert_models()
-    # insert_order_statuses()
-    # insert_origin_countries()
-    # insert_positions()
-    # insert_services()
-    # insert_sexes()
-    # insert_steering_wheels()
-    # insert_users(400000)
-    # insert_varnish_types()
-    # insert_varnishes()
-    # insert_customers(390000)
-    # insert_employees(200)
-    # insert_cars(10000)
-    # insert_configurations(300000)
-    # insert_orders(1000000)
+    insert_accessory_type()
+    insert_brands()
+    insert_car_accessories(100)
+    insert_car_bodies(20)
+    insert_car_drivetrains()
+    insert_car_equipments(30)
+    insert_car_power_supplies()
+    insert_car_statuses()
+    insert_engines(21)
+    insert_gearboxes()
+    insert_insurance_types()
+    insert_models()
+    insert_order_statuses()
+    insert_origin_countries()
+    insert_positions()
+    insert_services()
+    insert_sexes()
+    insert_steering_wheels()
+    insert_users(400000)
+    insert_varnish_types()
+    insert_varnishes()
+    insert_customers(390000)
+    insert_employees(200)
+    insert_cars(10000)
+    insert_configurations(300000)
+    insert_orders(1000000)
     insert_order_positions(300000)
     insert_insurances(30000)
     insert_payments(30000)
     insert_test_drives(50000)
 run()
-#
-# uuids = DataGenerators.generate_uuids(3)
-# names = ["318i", '316i', '320i']
-# descriptions = ['Small city Car']
-# FK_car_drivetrains = get_foreign_keys('CarDrivetrains', cur)
-#
-# statements = generateSql(3, 'Models', id=uuids, UNIQUE_name=names, description=descriptions,
-#                          fk_cardrivetrains=FK_car_drivetrains)
-# for statement in statements:
-#     cur.execute(statement)
-
 
 cur.close()
 conn.close()
