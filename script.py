@@ -206,7 +206,7 @@ def insert_insurance_types():
     count = len(types)
     ratio = [0.08, 0.1, 0.12]
     uuids = DataGenerators.generate_uuids(count)
-    insert('InsuranceTypes', count, ratio, UNIQUE_id=uuids, UNIQUE_type=types)
+    insert('InsuranceTypes', count, UNIQUE_ratio=ratio, UNIQUE_id=uuids, UNIQUE_type=types)
 
 
 def insert_models():
