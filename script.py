@@ -504,7 +504,9 @@ def run():
     insert_insurances(30000)
     insert_payments(30000)
     insert_test_drives(5000)
-    #testcooment
+
+
+##comment
 run()
 
 cur.close()
