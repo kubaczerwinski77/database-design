@@ -4,6 +4,10 @@ import psycopg2
 import uuid
 import DataGenerators
 
+ORDERS_WITH_CARS=  []
+
+
+
 # connection to database
 conn = psycopg2.connect("dbname=carsalon user=postgres password=admin")
 cur = conn.cursor()
@@ -25,9 +29,16 @@ def add_value(column, values_list,prob, iteration):
                 return """NULL"""
         else:
                 return f"""'{values_list[iteration]}'"""
-    
+
+    ##quick fix for insurances
+
+
+
     if column[:7] == 'UNIQUE_':
         val = pop_random(values_list)
+        ## quick fix for insurances so that only orders with cars have insurance
+        if(column=='UNIQUE_FK_Orders'):
+            ORDERS_WITH_CARS.append(val)
         if type(val) is int:
             return str(val)
         return f"""'{val}'"""
@@ -431,7 +442,7 @@ def insert_insurances(count):
     conclusions = DataGenerators.generate_dates(count, '2015-1-1', '2022-1-1')
     comments = ['bought with car', 'witout discounts', 'SalePakage']
     fk_insurance_types = get_foreign_keys('InsuranceTypes', cur)
-    fk_orders = get_foreign_keys('Orders', cur)
+    fk_orders = ORDERS_WITH_CARS
     insert('Insurances',count,UNIQUE_id=uuids, UNIQUE_policy_number=policy_number,
                                  commitment_period_in_days=commitments, conclusion_date=conclusions,
                                  NULL_comments=comments, FK_InsuranceTypes=fk_insurance_types, FK_Orders=fk_orders)
@@ -480,18 +491,19 @@ def run():
     insert_services()
     insert_sexes()
     insert_steering_wheels()
-    insert_users(400000)
+    insert_users(40000)
     insert_varnish_types()
     insert_varnishes()
-    insert_customers(390000)
+    insert_customers(39000)
     insert_employees(200)
     insert_cars(10000)
-    insert_configurations(300000)
-    insert_orders(1000000)
-    insert_order_positions(300000)
+    insert_configurations(30000)
+    insert_orders(10000)
+    insert_order_positions(30000)
+    print(ORDERS_WITH_CARS)
     insert_insurances(30000)
     insert_payments(30000)
-    insert_test_drives(50000)
+    insert_test_drives(5000)
 run()
 
 cur.close()
