@@ -6,6 +6,7 @@ import DataGenerators
 
 ORDERS_WITH_CARS=  []
 CARS_TO_SELL = []
+addback=True
 
 
 
@@ -23,6 +24,7 @@ def pop_random(list_of_values):
 
 
 def add_value(column, values_list,prob, iteration):
+    global addback
     if column == 'start_time' or column == 'end_time' or column == 'date_of_application':
             return f"""'{values_list[iteration]}'"""
     elif column == 'NULL_date_of_realisation':
@@ -35,8 +37,9 @@ def add_value(column, values_list,prob, iteration):
     if column[:7] == 'UNIQUE_':
         val = pop_random(values_list)
         ## quick fix for insurances so that only orders with cars have insurance
-        if(column=='UNIQUE_FK_Orders'):
+        if(column=='UNIQUE_FK_Orders'and addback):
             ORDERS_WITH_CARS.append(val)
+            print("addedback")
         if type(val) is int:
             return str(val)
         return f"""'{val}'"""
@@ -100,6 +103,9 @@ def csv_to_list(filename):
 
 def insert(table_name, count, **kwargs):
     for i in range(count):
+        if(table_name=='Insurances'):
+            print(len(kwargs['UNIQUE_FK_Orders']))
+
         if(i%1000==0):
             print(f"{table_name}: {i}")
         statement = generate_sql(table_name, i, **kwargs)
@@ -409,7 +415,8 @@ def insert_order_positions(count):
     fk_cars = get_foreign_keys('Cars', cur)
     fk_services = get_foreign_keys('Services', cur)
     fk_car_accessories = get_foreign_keys('CarAccessories', cur)
-
+    global addback
+    addback=True
     for i in range(count):
         r = random.randint(1, 3)
         if r == 1:
@@ -435,6 +442,10 @@ def insert_order_positions(count):
 
 
 def insert_insurances(count):
+    global addback
+    addback= False
+    global orders_with_cars_len
+    orders_with_cars_len = len(ORDERS_WITH_CARS)
     uuids = DataGenerators.generate_uuids(count)
     policy_number = DataGenerators.generate_ints_unique(count, 100, 10000000)
     commitments = DataGenerators.genereate_ints(count, 1, 700)
@@ -442,9 +453,13 @@ def insert_insurances(count):
     comments = ['bought with car', 'witout discounts', 'SalePakage']
     fk_insurance_types = get_foreign_keys('InsuranceTypes', cur)
     fk_orders = ORDERS_WITH_CARS
+
+
+
     insert('Insurances',count,UNIQUE_id=uuids, UNIQUE_policy_number=policy_number,
                                  commitment_period_in_days=commitments, conclusion_date=conclusions,
-                                 NULL_comments=comments, FK_InsuranceTypes=fk_insurance_types, UNIQUE_FK_Orders=fk_orders)
+                                 NULL_comments=comments, FK_InsuranceTypes=fk_insurance_types,
+           UNIQUE_FK_Orders=fk_orders)
 
 
 def insert_payments(count):
@@ -495,12 +510,12 @@ def run():
     insert_varnishes()
     insert_customers(39000)
     insert_employees(2000)
-    insert_cars(20000)
+    insert_cars(50000)
     insert_configurations(30000)
     insert_orders(30001)
     insert_order_positions(30000)
     print(ORDERS_WITH_CARS)
-    insert_insurances(30000)
+    insert_insurances(len(ORDERS_WITH_CARS))
     insert_payments(30000)
     insert_test_drives(5000)
 

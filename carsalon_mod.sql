@@ -74,38 +74,38 @@ ALTER TABLE Insurances ALTER COLUMN type SET NOT NULL;
 COMMIT;
 
 
--- Query 11 do przerobienia
-select insurancetypes.type AS "Typ ubezpieczenia", count(*) AS "Liczba sprzedanych w ostatnim roku" 
-from insurances 
-join insurancetypes 
-on insurancetypes.id = insurances.fk_insurancetypes 
-where date_part('year', age(insurances.conclusion_date)) < 1 
-group by insurancetypes.type;
-
--- Queries
-
--- Samochody bez ubezpieczenia
-SELECT insurances.id, Cars.id 
-FROM Cars
-LEFT JOIN insurances ON insurances.FK_Cars = cars.id
-where insurances.id is null;
-
--- Query 11 przerobiona
-select type AS "Typ ubezpieczenia", count(*) AS "Liczba sprzedanych w ostatnim roku" 
-from insurances 
-where date_part('year', age(conclusion_date)) < 1 
-group by type;
-
-
--- Samochody z ubezpieczeniem po modyfikacji
-
-SELECT COUNT(*)
-FROM Cars
-JOIN insurances ON insurances.FK_Cars = cars.id;
-
--- Samochody z ubezpieczeniem przed modyfikacją
-SELECT COUNT(*)
-FROM Cars
-INNER JOIN orderpositions ON orderpositions.FK_Cars = cars.id
-INNER JOIN orders ON orders.id = orderpositions.FK_Orders
-INNER JOIN insurances ON insurances.FK_Orders = orders.id;
+-- -- Query 11 do przerobienia
+-- select insurancetypes.type AS "Typ ubezpieczenia", count(*) AS "Liczba sprzedanych w ostatnim roku"
+-- from insurances
+-- join insurancetypes
+-- on insurancetypes.id = insurances.fk_insurancetypes
+-- where date_part('year', age(insurances.conclusion_date)) < 1
+-- group by insurancetypes.type;
+--
+-- -- Queries
+--
+-- -- Samochody bez ubezpieczenia
+-- SELECT insurances.id, Cars.id
+-- FROM Cars
+-- LEFT JOIN insurances ON insurances.FK_Cars = cars.id
+-- where insurances.id is null;
+--
+-- -- Query 11 przerobiona
+-- select type AS "Typ ubezpieczenia", count(*) AS "Liczba sprzedanych w ostatnim roku"
+-- from insurances
+-- where date_part('year', age(conclusion_date)) < 1
+-- group by type;
+--
+--
+-- -- Samochody z ubezpieczeniem po modyfikacji
+--
+-- SELECT COUNT(*)
+-- FROM Cars
+-- JOIN insurances ON insurances.FK_Cars = cars.id;
+--
+-- -- Samochody z ubezpieczeniem przed modyfikacją
+-- SELECT COUNT(*)
+-- FROM Cars
+-- INNER JOIN orderpositions ON orderpositions.FK_Cars = cars.id
+-- INNER JOIN orders ON orders.id = orderpositions.FK_Orders
+-- INNER JOIN insurances ON insurances.FK_Orders = orders.id;
