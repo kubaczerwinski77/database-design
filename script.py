@@ -9,7 +9,7 @@ ORDERS_WITH_CARS=  []
 
 
 # connection to database
-conn = psycopg2.connect("dbname=carsalon user=postgres password=admin")
+conn = psycopg2.connect("dbname=carsalon2 user=postgres password=admin")
 cur = conn.cursor()
 
 
@@ -427,7 +427,7 @@ def insert_order_positions(count):
                                      UNIQUE_FK_Orders=fk_orders, FK_Cars=fk_cars, NULL_FK_Services=fk_services,
                                      NULL_FK_CarAccessories=fk_car_accessories)
         try:
-            print('order positions')
+            print('order positions',len(ORDERS_WITH_CARS),len(fk_orders),len(fk_cars),len(fk_services),len(fk_car_accessories))
             cur.execute(statement)
         except Exception as err:
             print(err)
@@ -498,13 +498,12 @@ def run():
     insert_employees(200)
     insert_cars(10000)
     insert_configurations(30000)
-    insert_orders(10000)
+    insert_orders(30001)
     insert_order_positions(30000)
     print(ORDERS_WITH_CARS)
     insert_insurances(30000)
     insert_payments(30000)
     insert_test_drives(5000)
-
 
 ##comment
 run()
