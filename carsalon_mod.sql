@@ -69,7 +69,6 @@ ALTER TABLE Insurances ALTER COLUMN ratio SET NOT NULL;
 ALTER TABLE Insurances ALTER COLUMN price SET NOT NULL;
 ALTER TABLE Insurances ALTER COLUMN FK_Cars SET NOT NULL;
 ALTER TABLE Insurances ALTER COLUMN type SET NOT NULL;
-
 COMMIT;
 
 
@@ -95,4 +94,3 @@ from insurances
 where date_part('year', age(conclusion_date)) < 1 
 group by type;
 
--- Fajny przyklad
