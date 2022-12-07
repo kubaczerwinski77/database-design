@@ -444,7 +444,7 @@ def insert_insurances(count):
     fk_orders = ORDERS_WITH_CARS
     insert('Insurances',count,UNIQUE_id=uuids, UNIQUE_policy_number=policy_number,
                                  commitment_period_in_days=commitments, conclusion_date=conclusions,
-                                 NULL_comments=comments, FK_InsuranceTypes=fk_insurance_types, FK_Orders=fk_orders)
+                                 NULL_comments=comments, FK_InsuranceTypes=fk_insurance_types, UNIQUE_FK_Orders=fk_orders)
 
 
 def insert_payments(count):
