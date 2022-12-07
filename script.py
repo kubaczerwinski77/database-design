@@ -5,6 +5,7 @@ import uuid
 import DataGenerators
 
 ORDERS_WITH_CARS=  []
+CARS_TO_SELL = []
 
 
 
@@ -31,9 +32,6 @@ def add_value(column, values_list,prob, iteration):
                 return f"""'{values_list[iteration]}'"""
 
     ##quick fix for insurances
-
-
-
     if column[:7] == 'UNIQUE_':
         val = pop_random(values_list)
         ## quick fix for insurances so that only orders with cars have insurance
@@ -196,8 +194,8 @@ def insert_engines(count):
     uuids = DataGenerators.generate_uuids(count)
     names = DataGenerators.generate_strings(count, 2, 6)
     capacities = DataGenerators.generate_floats(count, 600, 7000)
-    powers = DataGenerators.generate_ints(count, 100, 1000)
-    torques = DataGenerators.generate_ints(count, 50, 500)
+    powers = DataGenerators.genereate_ints(count, 100, 1000)
+    torques = DataGenerators.genereate_ints(count, 50, 500)
     cylinders = csv_to_list('data/cylinder_arrangement.csv')
     fk_power_supplies = get_foreign_keys('CarPowerSupplies', cur)
     insert('Engines', count, UNIQUE_id=uuids, name=names, capacity=capacities,
@@ -358,7 +356,7 @@ def insert_cars(count):
     vins = DataGenerators.generate_vins(count)
     prices = DataGenerators.generate_floats(count // 2, 1000, 100000)
     production_dates = DataGenerators.generate_dates(count, '1968-1-1', '2022-1-1')
-    mileages = DataGenerators.generate_ints(count, 1, 100000)
+    mileages = DataGenerators.genereate_ints(   count, 1, 100000)
     descriptions = ["new", 'used', 'grandma drove to church']
     fk_engines = get_foreign_keys('Engines', cur)
     fk_models = get_foreign_keys('Models', cur)
@@ -405,7 +403,7 @@ def insert_orders(count):
 
 def insert_order_positions(count):
     uuids = DataGenerators.generate_uuids(count)
-    amounts = DataGenerators.generate_ints(count, 1, 100)
+    amounts = DataGenerators.genereate_ints(count, 1, 100)
     comments = ['lost in delivery', 'unavaliable at the moment', ' delivery from china', 'must be manufactured first']
     fk_orders = get_foreign_keys('Orders', cur)
     fk_cars = get_foreign_keys('Cars', cur)
@@ -422,9 +420,10 @@ def insert_order_positions(count):
             statement = generate_sql('OrderPositions', i,  UNIQUE_id=uuids, amount=amounts, NULL_comments=comments,
                                      FK_Orders=fk_orders, NULL_FK_Cars=fk_cars, FK_Services=fk_services,
                                      NULL_FK_CarAccessories=fk_car_accessories)
+            #Cars
         else:
             statement = generate_sql('OrderPositions', i, UNIQUE_id=uuids, amount=[1], NULL_comments=comments,
-                                     UNIQUE_FK_Orders=fk_orders, FK_Cars=fk_cars, NULL_FK_Services=fk_services,
+                                     UNIQUE_FK_Orders=fk_orders, UNIQUE_FK_Cars=fk_cars, NULL_FK_Services=fk_services,
                                      NULL_FK_CarAccessories=fk_car_accessories)
         try:
             print('order positions',len(ORDERS_WITH_CARS),len(fk_orders),len(fk_cars),len(fk_services),len(fk_car_accessories))
@@ -437,8 +436,8 @@ def insert_order_positions(count):
 
 def insert_insurances(count):
     uuids = DataGenerators.generate_uuids(count)
-    policy_number = DataGenerators.generate_ints(count, 100, 10000000)
-    commitments = DataGenerators.generate_ints(count, 1, 700)
+    policy_number = DataGenerators.generate_ints_unique(count, 100, 10000000)
+    commitments = DataGenerators.genereate_ints(count, 1, 700)
     conclusions = DataGenerators.generate_dates(count, '2015-1-1', '2022-1-1')
     comments = ['bought with car', 'witout discounts', 'SalePakage']
     fk_insurance_types = get_foreign_keys('InsuranceTypes', cur)
@@ -491,19 +490,19 @@ def run():
     insert_services()
     insert_sexes()
     insert_steering_wheels()
-    insert_users(400000)
+    insert_users(40000)
     insert_varnish_types()
     insert_varnishes()
-    insert_customers(390000)
+    insert_customers(39000)
     insert_employees(2000)
-    insert_cars(100000)
+    insert_cars(20000)
     insert_configurations(30000)
     insert_orders(30001)
     insert_order_positions(30000)
     print(ORDERS_WITH_CARS)
     insert_insurances(30000)
-    insert_payments(300000)
-    insert_test_drives(50000)
+    insert_payments(30000)
+    insert_test_drives(5000)
 
 ##comment
 run()

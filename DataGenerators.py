@@ -17,8 +17,15 @@ def generate_floats(count, min, max):
         return [round(random.uniform(min, max), 2) for x in range(count)]
 
 
-def generate_ints(count, min, max):
-    return [random.randrange(min, max)for x in range(count)]
+def genereate_ints(count, min, max):
+    return [random.randrange(min, max) for x in range(count)]
+
+def generate_ints_unique(count, min, max):
+    s = set()
+    while len(s)<=count:
+        s.add(random.randrange(min, max))
+    return list(s)
+
 
 
 def generate_strings(length, min, max):
