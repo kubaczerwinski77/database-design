@@ -1,0 +1,212 @@
+
+const database = 'car_salon';
+const collection = 'NEW_COLLECTION_NAME';
+
+// The current database to use.
+use(database);
+ 
+
+
+
+db.createCollection('employees',{
+  validator:  {
+    $jsonSchema:{
+      bsonType: "object",
+      title: "employees object validation",
+      required: ["username", "email","password", "sex","employment_date","positionName"],
+      properties: {
+        username: {
+          bsonType: "string",
+          maxLength: 50,
+          description: "username must be shorter than 50 characters"
+        },
+        email: {
+          bsonType: "string",
+          maxLength: 100,
+          description: "email must be shorter than 100 characters"
+        },
+        password: {
+          bsonType: "string",
+          maxLength: 255,
+          description :"password must be shorter than 255 characters"
+        },
+        firstName: {
+          bsonType: "string",
+          maxLength: 255
+        },
+        lastName: {
+          bsonType: "string",
+          maxLength: 255
+        },
+        date_of_birth: {
+          bsonType: "date"
+        },
+        phone: {
+          bsonType: "string",
+          maxLength: 20
+        },
+        pesel: {
+          bsonType: "string",
+          minLength: 11,
+          maxLength: 11
+        },
+        address: {
+          bsonType: "string",
+          maxLength: 255
+        },
+        sex: {
+          bsonType: "string",
+          maxLength: 1,
+          description :"sex must be specified (m/f)"
+          
+        },
+        employment_date: {
+            bsonType: "date",
+            description :"employment_date must be specified"
+        },
+        dismissal_date: {
+            bsonType: "date"
+        },
+        positionName: {
+            bsonType: "string",
+            maxLength: 255,
+            description :"positionName must be specified"
+        }
+      }
+    }
+  }
+});
+
+db.employees.insertOne(
+  { 'username': "emp1",'email': "emp1@carsalon.com", 'password':"emp1",'firstName': "janusz",'lastName': "kolodziej", 
+  'date_of_birth':new Date('2014-03-01T08:00:00Z'),'phone': "123123123",'pesel':"01291301566",
+   'address': "d21 pwr", 'sex': "m", 'employment_date':new Date('2014-03-01T08:00:00Z'),  'dismissal_date': new Date('2014-03-01T08:00:00Z') , 'positionName': "gornik"}
+)
+
+
+//Create a new collection.
+db.createCollection('customers',{
+  validator:  {
+    $jsonSchema:{
+      bsonType: "object",
+      title: "Custormers object validation",
+      required: ["username", "email","password", "sex"],
+      properties: {
+        username: {
+          bsonType: "string",
+          maxLength: 50,
+          description: "username must be shorter than 50 characters"
+        },
+        email: {
+          bsonType: "string",
+          maxLength: 100,
+          description: "email must be shorter than 100 characters"
+        },
+        password: {
+          bsonType: "string",
+          maxLength: 255,
+          description :"password must be shorter than 255 characters"
+        },
+        firstName: {
+          bsonType: "string",
+          maxLength: 255
+        },
+        lastName: {
+          bsonType: "string",
+          maxLength: 255
+        },
+        date_of_birth: {
+          bsonType: "date"
+        },
+        phone: {
+          bsonType: "string",
+          maxLength: 20
+        },
+        pesel: {
+          bsonType: "string",
+          minLength: 11,
+          maxLength: 11
+        },
+        address: {
+          bsonType: "string",
+          maxLength: 255
+        },
+        sex: {
+          bsonType: "string",
+          maxLength: 1
+        }
+      }
+    }
+  }
+});
+
+db.customers.insertOne(
+  {
+    'username':"tomaszG",
+    'email': "tomasz@gollob",
+    'password': "zmarzliklove",
+    'firstName': "Tomasz",
+    'lastName' : "Gollob",
+    'date_of_birth': new Date('2014-03-01T08:00:00Z'),
+    'phone': "1234557788",
+    'pesel': "01231301566",
+    'address': "pwr",
+    'sex': 'f'
+  }
+)
+// id? req
+// username r
+// email r
+// password r
+// firstName
+// lastName
+// date_of_birth
+// phone
+// pesel
+//address
+// sex r 
+
+// id? req
+// username r
+// email r
+// password r
+// firstName
+// lastName
+// date_of_birth
+// phone
+// pesel
+//address
+// sex r 
+//employment_date r
+// dismissal_date 
+// positionName r 
+
+
+// The prototype form to create a collection:
+/* db.createCollection( <name>,
+  {
+    capped: <boolean>,
+    autoIndexId: <boolean>,
+    size: <number>,
+    max: <number>,
+    storageEngine: <document>,
+    validator: <document>,
+    validationLevel: <string>,
+    validationAction: <string>,
+    indexOptionDefaults: <document>,
+    viewOn: <string>,
+    pipeline: <pipeline>,
+    collation: <document>,
+    writeConcern: <document>,
+    timeseries: { // Added in MongoDB 5.0
+      timeField: <string>, // required for time series collections
+      metaField: <string>,
+      granularity: <string>
+    },
+    expireAfterSeconds: <number>,
+    clusteredIndex: <document>, // Added in MongoDB 5.3
+  }
+)*/
+
+// More information on the `createCollection` command can be found at:
+// https://www.mongodb.com/docs/manual/reference/method/db.createCollection/
