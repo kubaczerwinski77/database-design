@@ -6,7 +6,7 @@ db.createCollection('orders', {
     $jsonSchema: {
       bsonType: "object",
       title: "Order object validation",
-      required: ["number", "date_of_application", "order_status"],
+      required: ["number", "date_of_application", "order_status", "customer"],
       properties: {
         
         number: {
@@ -58,7 +58,7 @@ db.createCollection('orders', {
               amount: { 
                 bsonType: "double",
                 description: "'amount' must be a double and is required",
-                minimum: 0
+                minimum: 0.0
               },
               deadline_date: { 
                 bsonType: "date",
@@ -158,6 +158,11 @@ db.createCollection('orders', {
             description: "'objectId' must be a reference to car object and is not required"
 
             }
+          },
+
+        customer: { 
+            bsonType: "objectId",
+            description: "'customer' must be a objectId and is required",
           }
           
         }

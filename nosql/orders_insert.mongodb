@@ -27,8 +27,9 @@ db.orders.insertOne({
       name: "service",
       description: "Description",
       price: 56.87
-    }]
+    }],
 
+    customer: ObjectId("63a393acac52ab1ab8c6a6aa")
 })
 
 db.orders.insertOne({
@@ -51,8 +52,9 @@ db.orders.insertOne({
       name: "washing",
       description: "Description",
       price: 56.87
-    }]
+    }],
 
+    customer: ObjectId("63a393acac52ab1ab8c6a6aa")
 })
 
 db.orders.insertOne({
@@ -63,6 +65,7 @@ db.orders.insertOne({
     comments: "Comment",
     order_status: "pending",
 
-    cars: [ObjectId("63a3903cf8ffd436a0c98b53")]
+    cars: [ObjectId("63a444cb323d202f4799e945")],
+    customer: ObjectId("63a437f6d9cb176eb8b894d6")
 
 })
