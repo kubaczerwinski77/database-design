@@ -1,3 +1,4 @@
+
 use('car_salon');
 
 db.createCollection('orders', {
@@ -30,6 +31,19 @@ db.createCollection('orders', {
         
         order_status: {
           bsonType: "string",
+            "enum": [
+              "pending",
+              "awaiting payment",
+              "awaiting fulfillment",
+              "awaiting pickup",
+              "completed",
+              "cancelled",
+              "declined",
+              "refunded",
+              "disputed",
+              "manual verification required",
+              "partially refunded"
+            ],
           description: "'order_status' must be a string and is required"
         },
 
@@ -42,15 +56,16 @@ db.createCollection('orders', {
 
             properties: {
               amount: { 
-                bsonType: "int",
-                description: "'amount' must be a int and is required"
+                bsonType: "double",
+                description: "'amount' must be a double and is required",
+                minimum: 0
               },
               deadline_date: { 
-                bsonType: "string",
+                bsonType: "date",
                 description: "'deadline_date' must be a date and is not required"
               },
               payment_date: { 
-                bsonType: "string",
+                bsonType: "date",
                 description: "'payment_date' must be a date and is required"
               },
               invoice_number: { 
@@ -66,7 +81,7 @@ db.createCollection('orders', {
           description: "Array of car accessories objects",
           items: {
             bsonType: "object",
-            required: ["name", "registration_number", "price_per_unit", "accessory_type"],
+            required: ["name", "registration_number", "price_per_unit", "accessory_type", "amount"],
             properties: {
               name: { 
                 bsonType: "string",
@@ -78,11 +93,23 @@ db.createCollection('orders', {
               },
               price_per_unit: { 
                 bsonType: "double",
-                description: "'price_per_unit' must be a double and is required"
+                description: "'price_per_unit' must be a double and is required",
+                minimum: 0
               },
               accessory_type: {
                 bsonType: "string",
+                "enum": [
+                    "Accessory",
+                    "Tire",
+                    "Part"
+
+                ],
                 description: "'accessory_type' must be a string and is required"
+              },
+              amount: {
+                bsonType: "int",
+                description: "'amount' must be a int and is required",
+                minimum: 0
               },
               comments: { 
                 bsonType: "string",
@@ -101,6 +128,13 @@ db.createCollection('orders', {
             properties: {
               name: { 
                 bsonType: "string",
+                "enum": [
+                      "service",
+                      "repair",
+                      "washing",
+                      "detailing",
+                      "cleaning",
+                ],
                 description: "'name' must be a string and is required"
               },
               description: { 
@@ -109,7 +143,8 @@ db.createCollection('orders', {
               },
               price: { 
                 bsonType: "double",
-                description: "'price' must be a double and is required"
+                description: "'price' must be a double and is required",
+                minimum: 0
 
               }
             }
@@ -120,12 +155,15 @@ db.createCollection('orders', {
           bsonType: ["array"],
           items: {
             bsonType: "objectId",
-            description: "'objectId' must be a reference to car object and is not equired"
+            description: "'objectId' must be a reference to car object and is not required"
+
+            }
           }
           
         }
-
       }
     }
-  }
-});
+  })
+
+
+

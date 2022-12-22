@@ -1,214 +1,212 @@
-use('car_salon');
-
 db.createCollection('cars', {
-  validator: {
-  $jsonSchema: {
-    bsonType: 'object',
-    title: 'Car object validation',
-    required: [
-      'brand',
-      'vin',
-      'production_date',
-      'mileage',
-      'status',
-      'engine',
-      'model',
-      'origin_country',
-      'body',
-      'varnish',
-      'steering_wheel',
-      'equipment'
-    ],
-    properties: {
-      origin_country: {
-        bsonType: 'string'
-      },
-      brand: {
-        bsonType: 'string'
-      },
-      vin: {
-        bsonType: 'string',
-        maxLength: 17
-      },
-      price: {
-        bsonType: 'double',
-        minimum: 0
-      },
-      production_date: {
-        bsonType: 'int',
-        minimum: 1900
-      },
-      mileage: {
-        bsonType: 'int',
-        minimum: 0
-      },
-      description: {
-        bsonType: 'string',
-        maxLength: 255
-      },
-      status: {
-        bsonType: 'string',
-        'enum': [
-          'Damaged',
-          'Not crashed',
-          'ASO Serviced',
-          'Historic'
-        ]
-      },
-      engine: {
-        bsonType: 'object',
-        required: [
-          'name',
-          'capacity',
-          'power'
-        ],
-        properties: {
-          name: {
-            bsonType: 'string',
-            maxLength: 50
-          },
-          capacity: {
-            bsonType: 'double',
-            minimum: 0
-          },
-          power: {
-            bsonType: 'int',
-            minimum: 0
-          },
-          torque: {
-            bsonType: 'int',
-            minimum: 0
-          },
-          cylinder_arrangement: {
-            bsonType: 'string',
-            'enum': [
-              'Inline',
-              'V-type',
-              'W-type',
-              'Rotary',
-              'Boxer'
-            ]
-          },
-          power_supply: {
-            bsonType: 'string'
-          }
-        }
-      },
-      model: {
-        bsonType: 'object',
-        required: [
-          'name',
-          'brand',
-          'drivetrain',
-          'gearbox'
-        ],
-        properties: {
-          name: {
-            bsonType: 'string'
-          },
-          description: {
-            bsonType: 'string',
-            maxLength: 255
-          },
-          brand: {
-            bsonType: 'string'
-          },
-          drivetrain: {
-            bsonType: 'string',
-            'enum': [
-              'AWD',
-              'RWD',
-              'FWD'
-            ]
-          },
-          gearbox: {
-            bsonType: 'object',
-            required: [
-              'type'
-            ],
-            properties: {
-              type: {
-                bsonType: 'string'
-              },
-              ratio: {
-                bsonType: 'double'
-              }
-            }
-          }
-        }
-      },
-      body: {
-        bsonType: 'object',
-        required: [
-          'type'
-        ],
-        properties: {
-          type: {
-            bsonType: 'string'
-          },
-          door_number: {
-            bsonType: 'int',
-            minimum: 0
-          },
-          seat_number: {
-            bsonType: 'int',
-            minimum: 0
-          }
-        }
-      },
-      varnish: {
-        bsonType: 'object',
-        required: [
-          'name',
-          'type',
-          'code'
-        ],
-        properties: {
-          name: {
-            bsonType: 'string'
-          },
-          type: {
-            bsonType: 'string',
-            'enum': [
-              'Glossy',
-              'Matt',
-              'Transparent',
-              'Nontransparent with shade'
-            ]
-          },
-          code: {
-            bsonType: 'string'
-          }
-        }
-      },
-      steering_wheel: {
-        bsonType: 'string',
-        'enum': [
-          'right',
-          'left'
-        ]
-      },
-      equipment: {
-        bsonType: 'array',
-        minItems: 1,
-        uniqueItems: true,
-        items: {
+    validator: {
+    $jsonSchema: {
+      bsonType: 'object',
+      title: 'Car object validation',
+      required: [
+        'brand',
+        'vin',
+        'production_date',
+        'mileage',
+        'status',
+        'engine',
+        'model',
+        'origin_country',
+        'body',
+        'varnish',
+        'steering_wheel',
+        'equipment'
+      ],
+      properties: {
+        origin_country: {
+          bsonType: 'string'
+        },
+        brand: {
+          bsonType: 'string'
+        },
+        vin: {
+          bsonType: 'string',
+          maxLength: 17
+        },
+        price: {
+          bsonType: 'double',
+          minimum: 0.0
+        },
+        production_date: {
+          bsonType: 'int',
+          minimum: 1900
+        },
+        mileage: {
+          bsonType: 'int',
+          minimum: 0
+        },
+        description: {
+          bsonType: 'string',
+          maxLength: 255
+        },
+        status: {
+          bsonType: 'string',
+          'enum': [
+            'Damaged',
+            'Not crashed',
+            'ASO Serviced',
+            'Historic'
+          ]
+        },
+        engine: {
           bsonType: 'object',
           required: [
             'name',
+            'capacity',
+            'power'
+          ],
+          properties: {
+            name: {
+              bsonType: 'string',
+              maxLength: 50
+            },
+            capacity: {
+              bsonType: 'double',
+              minimum: 0.0
+            },
+            power: {
+              bsonType: 'int',
+              minimum: 0
+            },
+            torque: {
+              bsonType: 'int',
+              minimum: 0
+            },
+            cylinder_arrangement: {
+              bsonType: 'string',
+              'enum': [
+                'Inline',
+                'V-type',
+                'W-type',
+                'Rotary',
+                'Boxer'
+              ]
+            },
+            power_supply: {
+              bsonType: 'string'
+            }
+          }
+        },
+        model: {
+          bsonType: 'object',
+          required: [
+            'name',
+            'brand',
+            'drivetrain',
+            'gearbox'
+          ],
+          properties: {
+            name: {
+              bsonType: 'string'
+            },
+            description: {
+              bsonType: 'string',
+              maxLength: 255
+            },
+            brand: {
+              bsonType: 'string'
+            },
+            drivetrain: {
+              bsonType: 'string',
+              'enum': [
+                'AWD',
+                'RWD',
+                'FWD'
+              ]
+            },
+            gearbox: {
+              bsonType: 'object',
+              required: [
+                'type'
+              ],
+              properties: {
+                type: {
+                  bsonType: 'string'
+                },
+                ratio: {
+                  bsonType: 'double'
+                }
+              }
+            }
+          }
+        },
+        body: {
+          bsonType: 'object',
+          required: [
+            'type'
+          ],
+          properties: {
+            type: {
+              bsonType: 'string'
+            },
+            door_number: {
+              bsonType: 'int',
+              minimum: 0
+            },
+            seat_number: {
+              bsonType: 'int',
+              minimum: 0
+            }
+          }
+        },
+        varnish: {
+          bsonType: 'object',
+          required: [
+            'name',
+            'type',
             'code'
           ],
           properties: {
             name: {
               bsonType: 'string'
             },
+            type: {
+              bsonType: 'string',
+              'enum': [
+                'Glossy',
+                'Matt',
+                'Transparent',
+                'Nontransparent with shade'
+              ]
+            },
             code: {
               bsonType: 'string'
+            }
+          }
+        },
+        steering_wheel: {
+          bsonType: 'string',
+          'enum': [
+            'right',
+            'left'
+          ]
+        },
+        equipment: {
+          bsonType: 'array',
+          minItems: 1,
+          uniqueItems: true,
+          items: {
+            bsonType: 'object',
+            required: [
+              'name',
+              'code'
+            ],
+            properties: {
+              name: {
+                bsonType: 'string'
+              },
+              code: {
+                bsonType: 'string'
+              }
             }
           }
         }
       }
     }
   }
-}
-});
+})

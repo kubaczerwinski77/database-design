@@ -1,0 +1,40 @@
+use('car_salon');
+
+db.cars.insertOne({
+
+    origin_country: "Poland",
+    brand: "BMW",
+    vin: "23456787654323456",
+    price: 100000.50,
+    production_date: 23874623,
+    mileage: 235000,
+    description: "Great car",
+    status: "Not crashed",
+    engine: {
+        name: "5.0 V8",
+        capacity: 5.10,
+        power: 560,
+        torque: 700,
+        cylinder_arrangement: "V-type",
+        power_supply: "petrol"
+    },
+    model: {
+        name: "m2",
+        brand: "BMW",
+        drivetrain: "RWD",
+        gearbox: {
+            type: "automatic"
+        }
+    },
+    body: {
+        type: "coupe"
+    },
+    varnish: {
+        name: "light blue",
+        type: "Glossy",
+        code: '4H3K3'
+    },
+    steering_wheel: "right",
+    equipment: [{name: "radio", code: "3J356"}]
+
+})

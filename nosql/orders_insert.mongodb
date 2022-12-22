@@ -1,0 +1,68 @@
+use('car_salon');
+
+db.orders.insertOne({
+
+    number: "23452",
+    date_of_application: new Date('2015-01-01'),
+    date_of_realisation: new Date('2015-01-01'),
+    comments: "Comment",
+    order_status: "pending",
+
+    payments: [{
+      amount: 23.35,
+      deadline_date: new Date('2015-01-01'),
+      payment_date: new Date('2015-01-01'),   
+      invoice_number: "32493274"   
+    }],
+
+    car_accessories: [{
+      name: "Accessory",
+      registration_number: "29384723",
+      price_per_unit: 34.67,
+      amount: 2,
+      accessory_type: "Accessory"
+    }],
+
+    services: [{
+      name: "service",
+      description: "Description",
+      price: 56.87
+    }]
+
+})
+
+db.orders.insertOne({
+
+    number: "23452",
+    date_of_application: new Date('2015-01-01'),
+    date_of_realisation: new Date('2015-01-01'),
+    comments: "Comment",
+    order_status: "pending",
+
+    car_accessories: [{
+      name: "Wunder-baum",
+      registration_number: "29384723",
+      price_per_unit: 34.67,
+      amount: 3,
+      accessory_type: "Accessory"
+    }],
+
+    services: [{
+      name: "washing",
+      description: "Description",
+      price: 56.87
+    }]
+
+})
+
+db.orders.insertOne({
+
+    number: "87654",
+    date_of_application: new Date('2015-01-01'),
+    date_of_realisation: new Date('2015-01-01'),
+    comments: "Comment",
+    order_status: "pending",
+
+    cars: [ObjectId("63a3903cf8ffd436a0c98b53")]
+
+})
