@@ -1,0 +1,41 @@
+const database = 'car-salon-wdomini';
+const collection = 'NEW_COLLECTION_NAME';
+
+// The current database to use.
+use(database);
+
+
+db.createCollection('test-drives',{
+  validator:  {
+    $jsonSchema:{
+      bsonType: "object",
+      title: "test-drives object validation",
+      required: ["start_time", "end_time", "employee", "customer"],
+      properties: {
+        start_time: {
+          bsonType: "date",
+          description: "'start_time' must be a date and is required"
+        },
+
+        end_time: {
+          bsonType: "date",
+          description: "'end_time' must be a date and is required"
+        },
+
+        employee: {
+          bsonType: "objectId",
+          description: "'objectId' must be a reference to employee object and is required"
+        },
+
+        customer: {
+          bsonType: "objectId",
+          description: "'objectId' must be a reference to customer object and is required"
+        },
+
+        comments: {
+          bsonType: "string",
+          description: "'comments' must be a string and is not required"
+        }
+    }
+  }
+}});

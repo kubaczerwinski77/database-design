@@ -1,0 +1,29 @@
+// MongoDB Playground
+// To disable this template go to Settings | MongoDB | Use Default Template For Playground.
+// Make sure you are connected to enable completions and to be able to run a playground.
+// Use Ctrl+Space inside a snippet or a string literal to trigger completions.
+
+// Select the database to use.
+use('car-salon-wdomini');
+
+db['test-drives'].insertOne({ 
+  start_time: new Date('2022-12-21T09:00:00Z'), 
+  end_time: new Date('2022-12-21T10:00:00Z'), 
+  customer: ObjectId("63a390892551961a80d117b2"), 
+  employee: ObjectId("63a38fc26396b541a20a39c2")
+  });
+
+//inny
+db['test-drives'].insertOne({ 
+  start_time: new Date('2022-12-21T10:30:00Z'), 
+  end_time: new Date('2022-12-21T12:00:00Z'), 
+  customer: ObjectId("63a390892551961a80d117b1"), 
+  employee: ObjectId("63a38fc26396b541a20a39c2")
+  });
+
+db['test-drives'].insertOne({ 
+  start_time: new Date('2022-12-22T07:30:00Z'), 
+  end_time: new Date('2022-12-22T07:35:00Z'), 
+  customer: ObjectId("63a390892551961a80d117b2"), 
+  employee: ObjectId("63a38fc26396b541a20a39c2")
+  });
