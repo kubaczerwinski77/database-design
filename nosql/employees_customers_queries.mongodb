@@ -1,0 +1,24 @@
+
+const database = 'car_salon';
+//const collection = 'NEW_COLLECTION_NAME';
+
+// The current database to use.
+use(database);
+//db.employees.find({"employment_date" : { $gte : new ISODate("2012-01-12T20:15:31Z") }},{firstName:1,lastName:1});
+
+db.customers.aggregate(
+  [
+   {
+   $facet : {
+     "femalesCount" : [
+       { $match: { sex:"f" } },
+       {$count: "females"}
+     ]  ,
+     "malesCount" : [
+      { $match: { sex:"m" } },
+       {$count: "males"}
+     ]
+  }
+}
+  ]
+)
