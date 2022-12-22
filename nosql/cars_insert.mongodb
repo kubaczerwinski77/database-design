@@ -38,3 +38,42 @@ db.cars.insertOne({
     equipment: [{name: "radio", code: "3J356"}]
 
 })
+
+db.cars.insertOne({
+
+    origin_country: "Poland",
+    brand: "Audi",
+    vin: "23456787254323456",
+    price: 80000.50,
+    production_date: 2352342,
+    mileage: 22000,
+    description: "Awesome car",
+    status: "Damaged",
+    engine: {
+        name: "2.3 Turbo",
+        capacity: 2.3,
+        power: 250,
+        torque: 400,
+        cylinder_arrangement: "Inline",
+        power_supply: "petrol"
+    },
+    model: {
+        name: "a6",
+        brand: "Audi",
+        drivetrain: "RWD",
+        gearbox: {
+            type: "automatic"
+        }
+    },
+    body: {
+        type: "coupe"
+    },
+    varnish: {
+        name: "light yellow",
+        type: "Glossy",
+        code: '23J34'
+    },
+    steering_wheel: "left",
+    equipment: [{name: "air-condition", code: "2K45J"}]
+
+})
