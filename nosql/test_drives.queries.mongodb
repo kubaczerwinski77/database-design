@@ -7,34 +7,34 @@
 use('car_salon');
 
 //find test drives before 22.12.2022
-db['test-drives'].find({ 
-  end_time: {$lt: new Date('2022-12-22')}
-});
+// db['test-drives'].find({ 
+//   end_time: {$lt: new Date('2022-12-22')}
+// });
 
 //find test drives with length less than 60 minutes
-db['test-drives'].aggregate( [
-    {
-        $project: {
-        start: "$start_time",
-        end: "$end_time",
-        length: {
-          $dateDiff: {
-            startDate: "$start_time",
-            endDate: "$end_time",
-            unit: "minute"
-          }
-        }
-      }
-    },
-    {
-      $match: { 
-        $expr: { 
-          $lt: ["$length", 60]
-        } 
-      }
-    }
-  ]
-);
+// db['test-drives'].aggregate( [
+//     {
+//         $project: {
+//         start: "$start_time",
+//         end: "$end_time",
+//         length: {
+//           $dateDiff: {
+//             startDate: "$start_time",
+//             endDate: "$end_time",
+//             unit: "minute"
+//           }
+//         }
+//       }
+//     },
+//     {
+//       $match: { 
+//         $expr: { 
+//           $lt: ["$length", 60]
+//         } 
+//       }
+//     }
+//   ]
+// );
 
 //join test drives with customer details
 db['test-drives'].aggregate( [
