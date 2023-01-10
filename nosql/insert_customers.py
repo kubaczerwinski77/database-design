@@ -43,7 +43,7 @@ for customer in customers.find():
 #  'username': 'tomaszG'}
 def insert_customer(count: int):
     addresses = csv_to_list('../data/addresses.csv')
-    date_of_births = DataGeneratorsNoSql.generate_dates(10,"1900-01-01","2020-01-01")
+    date_of_births = DataGeneratorsNoSql.generate_dates(10, "1900-01-01", "2020-01-01")
     emails = csv_to_list('../data/emails.csv')
     names = csv_to_list('../data/Names.csv')
     lastNames = csv_to_list('../data/Surnames.csv')
@@ -56,7 +56,7 @@ def insert_customer(count: int):
     for i in range(count):
         data = {
             'address': get_random(addresses),
-            'date_of_birth': datetime.datetime.fromisoformat(get_random(date_of_births)),
+            'date_of_birth': get_random(date_of_births),
             'email': get_random(emails),
             'firstName': get_random(names),
             'lastName': get_random(lastNames),
