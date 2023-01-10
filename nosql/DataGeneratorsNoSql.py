@@ -1,6 +1,4 @@
-import csv
 import random
-import uuid
 from datetime import timedelta, datetime
 
 
