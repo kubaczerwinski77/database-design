@@ -39,13 +39,13 @@ def generate_strings(length, min, max):
 def generate_timestamps(count, start, stop):
     start = datetime.strptime(start, "%Y-%m-%d %H:%M:%S")
     stop = datetime.strptime(stop, "%Y-%m-%d %H:%M:%S")
-    return [(start + timedelta(seconds=random.randrange(0, (stop - start).total_seconds()))).isoformat() for x in
+    return [(start + timedelta(seconds=random.randrange(0, (stop - start).total_seconds()))) for x in
             range(count)]
 
 def generate_end_timestamps(list_start_timestamps, max_minutes):
     list_start_timestamps = list(
         map(lambda elem: datetime.strptime(elem, "%Y-%m-%dT%H:%M:%S"), list_start_timestamps.copy()))
-    return [(list_start_timestamps[x] + timedelta(seconds=random.randrange(0, max_minutes * 60))).isoformat() for x in
+    return [(list_start_timestamps[x] + timedelta(seconds=random.randrange(0, max_minutes * 60))) for x in
             range(len(list_start_timestamps))]
 
 def generate_vins(Count):
@@ -58,11 +58,11 @@ def generate_vins(Count):
 def generate_dates(count, start, stop):
     start = datetime.strptime(start, "%Y-%m-%d")
     stop = datetime.strptime(stop, "%Y-%m-%d")
-    return [(start+timedelta(days=random.randrange(0, (stop-start).days))).isoformat() for x in range(count)]
+    return [(start+timedelta(days=random.randrange(0, (stop-start).days))) for x in range(count)]
 
 def generate_end_dates(list_start_dates, max_days):
     list_start_dates = list(map(lambda elem : datetime.strptime(elem, "%Y-%m-%dT%H:%M:%S"), list_start_dates.copy()))
-    return [(list_start_dates[x]+timedelta(days=random.randrange(0, max_days))).isoformat() for x in range(len(list_start_dates))]
+    return [(list_start_dates[x]+timedelta(days=random.randrange(0, max_days))) for x in range(len(list_start_dates))]
 
 def generate_phones(count):
     return  [str(random.randrange(100000000,999999999)) for x in range(count)]
