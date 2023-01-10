@@ -78,9 +78,21 @@ db.createCollection('employees',{
 });
 
 db.employees.insertOne(
-  { 'username': "emp1",'email': "emp1@carsalon.com", 'password':"emp1",'firstName': "janusz",'lastName': "kolodziej", 
-  'date_of_birth':new Date('2014-03-01T08:00:00Z'),'phone': "123123123",'pesel':"01291301566",
-   'address': "d21 pwr", 'sex': "m", 'employment_date':new Date('2014-03-01T08:00:00Z'),  'dismissal_date': new Date('2014-03-01T08:00:00Z') , 'positionName': "gornik"}
+ {
+   "username":"emp1",
+   "email":"emp1@carsalon.com",
+   "password":"emp1",
+   "firstName":"janusz",
+   "lastName":"kolodziej",
+   "date_of_birth":"new Date(""2014-03-01T08:00:00Z"")",
+   "phone":"123123123",
+   "pesel":"01291301566",
+   "address":"d21 pwr",
+   "sex":"m",
+   "employment_date":"new Date(""2014-03-01T08:00:00Z"")",
+   "dismissal_date":"new Date(""2014-03-01T08:00:00Z"")",
+   "positionName":"gornik"
+    }
 )
 
 
