@@ -96,7 +96,6 @@ db.createCollection('cars', {
           bsonType: 'object',
           required: [
             'name',
-            'brand',
             'drivetrain',
             'gearbox'
           ],
@@ -108,9 +107,7 @@ db.createCollection('cars', {
               bsonType: 'string',
               maxLength: 255
             },
-            brand: {
-              bsonType: 'string'
-            },
+
             drivetrain: {
               bsonType: 'string',
               'enum': [

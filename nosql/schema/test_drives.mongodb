@@ -247,7 +247,6 @@ db.createCollection('test-drives',{
               bsonType: 'object',
               required: [
                 'name',
-                'brand',
                 'drivetrain',
                 'gearbox'
               ],
@@ -258,9 +257,6 @@ db.createCollection('test-drives',{
                 description: {
                   bsonType: 'string',
                   maxLength: 255
-                },
-                brand: {
-                  bsonType: 'string'
                 },
                 drivetrain: {
                   bsonType: 'string',

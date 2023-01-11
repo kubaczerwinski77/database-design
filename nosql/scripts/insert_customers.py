@@ -1,9 +1,7 @@
 import csv
-from pprint import pprint
-import DataGeneratorsNoSql
+from nosql import DataGeneratorsNoSql
 from pymongo import MongoClient
 import random
-import datetime
 
 
 def get_random(list_of_values):
@@ -50,16 +48,16 @@ customers = db.customers
 #  'sex': 'f',
 #  'username': 'tomaszG'}
 def insert_customer(count: int):
-    addresses = csv_to_list('../data/addresses.csv')
+    addresses = csv_to_list('../../data/addresses.csv')
     date_of_births = DataGeneratorsNoSql.generate_dates(10, "1900-01-01", "2020-01-01")
-    emails = csv_to_list('../data/emails.csv')
-    names = csv_to_list('../data/Names.csv')
-    lastNames = csv_to_list('../data/Surnames.csv')
+    emails = csv_to_list('../../data/emails.csv')
+    names = csv_to_list('../../data/Names.csv')
+    lastNames = csv_to_list('../../data/Surnames.csv')
     passwords = DataGeneratorsNoSql.generate_strings(10, 8, 16)
     pesels = DataGeneratorsNoSql.generate_pesels(10)
     phones = DataGeneratorsNoSql.generate_phones(10)
     sexes = ['f', 'm']
-    usernames = csv_to_list('../data/usernames.csv')
+    usernames = csv_to_list('../../data/usernames.csv')
     # print(date_of_births)
     for i in range(count):
         data = {

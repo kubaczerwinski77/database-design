@@ -1,7 +1,7 @@
 from pymongo import MongoClient
 import random
 import csv
-import DataGeneratorsNoSql as gen
+from nosql import DataGeneratorsNoSql as gen
 
 
 def get_random(list_of_values):

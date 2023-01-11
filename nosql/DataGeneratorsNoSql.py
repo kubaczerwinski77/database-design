@@ -68,7 +68,7 @@ def generate_pesels(count):
 def generate_equipment_codes(count):
     codes = set()
     while(len(codes)<count):
-        codes.add(random.randrange(1000,1000000))
+        codes.add(str(random.randrange(1000,1000000)))
     return list(codes)
 
 

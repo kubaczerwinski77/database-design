@@ -1,0 +1,412 @@
+db.createCollection('orders', {
+    validator: {
+        $jsonSchema: {
+            bsonType: "object",
+            title: "Order object validation",
+            required: ["number", "date_of_application", "order_status", "payments", "car_accessories", "services", "customer"],
+            properties: {
+
+                number: {
+                    bsonType: "string",
+                    description: "'number' must be a string and is required"
+                },
+
+                date_of_application: {
+                    bsonType: "date",
+                    description: "'date_of_application' must be a date and is required"
+                },
+
+                date_of_realisation: {
+                    bsonType: "date",
+                    description: "'date_of_realisation' must be a date and is not required"
+                },
+
+                comments: {
+                    bsonType: "string",
+                    description: "'comments' must be a string and is not required"
+                },
+
+                order_status: {
+                    bsonType: "string",
+                    "enum": [
+                        "pending",
+                        "awaiting payment",
+                        "awaiting fulfillment",
+                        "awaiting pickup",
+                        "completed",
+                        "cancelled",
+                        "declined",
+                        "refunded",
+                        "disputed",
+                        "manual verification required",
+                        "partially refunded"
+                    ],
+                    description: "'order_status' must be a string and is required"
+                },
+
+                payments: {
+                    bsonType: ["array"],
+                    description: "Array of payment objects",
+                    items: {
+                        bsonType: "object",
+                        required: ["amount", "payment_date"],
+
+                        properties: {
+                            amount: {
+                                bsonType: "double",
+                                description: "'amount' must be a double and is required",
+                                minimum: 0.0
+                            },
+                            deadline_date: {
+                                bsonType: "date",
+                                description: "'deadline_date' must be a date and is not required"
+                            },
+                            payment_date: {
+                                bsonType: "date",
+                                description: "'payment_date' must be a date and is required"
+                            },
+                            invoice_number: {
+                                bsonType: "string",
+                                description: "'invoice_number' must be a string and is not required"
+                            }
+                        }
+                    }
+                },
+
+                car_accessories: {
+                    bsonType: ["array"],
+                    description: "Array of car accessories objects",
+                    items: {
+                        bsonType: "object",
+                        required: ["name", "registration_number", "price_per_unit", "accessory_type", "amount"],
+                        properties: {
+                            name: {
+                                bsonType: "string",
+                                description: "'name' must be a string and is required"
+                            },
+                            registration_number: {
+                                bsonType: "string",
+                                description: "'registration_number' must be a string and is required"
+                            },
+                            price_per_unit: {
+                                bsonType: "double",
+                                description: "'price_per_unit' must be a double and is required",
+                                minimum: 0
+                            },
+                            accessory_type: {
+                                bsonType: "string",
+                                "enum": [
+                                    "Accessory",
+                                    "Tire",
+                                    "Part"
+
+                                ],
+                                description: "'accessory_type' must be a string and is required"
+                            },
+                            amount: {
+                                bsonType: "int",
+                                description: "'amount' must be a int and is required",
+                                minimum: 0
+                            },
+                            comments: {
+                                bsonType: "string",
+                                description: "'comments' must be a string and is not required"
+                            }
+                        }
+                    }
+                },
+
+                services: {
+                    bsonType: ["array"],
+                    description: "Array of services objects",
+                    items: {
+                        bsonType: "object",
+                        required: ["name", "price"],
+                        properties: {
+                            name: {
+                                bsonType: "string",
+                                "enum": [
+                                    "service",
+                                    "repair",
+                                    "washing",
+                                    "detailing",
+                                    "cleaning",
+                                ],
+                                description: "'name' must be a string and is required"
+                            },
+                            description: {
+                                bsonType: "string",
+                                description: "'description' must be a string and is not required"
+                            },
+                            price: {
+                                bsonType: "double",
+                                description: "'price' must be a double and is required",
+                                minimum: 0
+
+                            }
+                        }
+                    }
+                },
+
+                cars: {
+                    bsonType: 'object',
+                    title: 'Car object validation',
+                    required: [
+                        'brand',
+                        'vin',
+                        'production_date',
+                        'mileage',
+                        'status',
+                        'engine',
+                        'model',
+                        'origin_country',
+                        'body',
+                        'varnish',
+                        'steering_wheel',
+                        'equipment'
+                    ],
+                    properties: {
+                        origin_country: {
+                            bsonType: 'string'
+                        },
+                        brand: {
+                            bsonType: 'string'
+                        },
+                        vin: {
+                            bsonType: 'string',
+                            maxLength: 17
+                        },
+                        price: {
+                            bsonType: 'double',
+                            minimum: 0.0
+                        },
+                        production_date: {
+                            bsonType: 'int',
+                            minimum: 1900
+                        },
+                        mileage: {
+                            bsonType: 'int',
+                            minimum: 0
+                        },
+                        description: {
+                            bsonType: 'string',
+                            maxLength: 255
+                        },
+                        status: {
+                            bsonType: 'string',
+                            'enum': [
+                                'Damaged',
+                                'Not crashed',
+                                'ASO Serviced',
+                                'Historic'
+                            ]
+                        },
+                        engine: {
+                            bsonType: 'object',
+                            required: [
+                                'name',
+                                'capacity',
+                                'power'
+                            ],
+                            properties: {
+                                name: {
+                                    bsonType: 'string',
+                                    maxLength: 50
+                                },
+                                capacity: {
+                                    bsonType: 'double',
+                                    minimum: 0.0
+                                },
+                                power: {
+                                    bsonType: 'int',
+                                    minimum: 0
+                                },
+                                torque: {
+                                    bsonType: 'int',
+                                    minimum: 0
+                                },
+                                cylinder_arrangement: {
+                                    bsonType: 'string',
+                                    'enum': [
+                                        'Inline',
+                                        'V-type',
+                                        'W-type',
+                                        'Rotary',
+                                        'Boxer'
+                                    ]
+                                },
+                                power_supply: {
+                                    bsonType: 'string'
+                                }
+                            }
+                        },
+                        model: {
+                            bsonType: 'object',
+                            required: [
+                                'name',
+                                'drivetrain',
+                                'gearbox'
+                            ],
+                            properties: {
+                                name: {
+                                    bsonType: 'string'
+                                },
+                                description: {
+                                    bsonType: 'string',
+                                    maxLength: 255
+                                },
+                                drivetrain: {
+                                    bsonType: 'string',
+                                    'enum': [
+                                        'AWD',
+                                        'RWD',
+                                        'FWD'
+                                    ]
+                                },
+                                gearbox: {
+                                    bsonType: 'object',
+                                    required: [
+                                        'type'
+                                    ],
+                                    properties: {
+                                        type: {
+                                            bsonType: 'string'
+                                        },
+                                        ratio: {
+                                            bsonType: 'double'
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        body: {
+                            bsonType: 'object',
+                            required: [
+                                'type'
+                            ],
+                            properties: {
+                                type: {
+                                    bsonType: 'string'
+                                },
+                                door_number: {
+                                    bsonType: 'int',
+                                    minimum: 0
+                                },
+                                seat_number: {
+                                    bsonType: 'int',
+                                    minimum: 0
+                                }
+                            }
+                        },
+                        varnish: {
+                            bsonType: 'object',
+                            required: [
+                                'name',
+                                'type',
+                                'code'
+                            ],
+                            properties: {
+                                name: {
+                                    bsonType: 'string'
+                                },
+                                type: {
+                                    bsonType: 'string',
+                                    'enum': [
+                                        'Glossy',
+                                        'Matt',
+                                        'Transparent',
+                                        'Nontransparent with shade'
+                                    ]
+                                },
+                                code: {
+                                    bsonType: 'string'
+                                }
+                            }
+                        },
+                        steering_wheel: {
+                            bsonType: 'string',
+                            'enum': [
+                                'right',
+                                'left'
+                            ]
+                        },
+                        equipment: {
+                            bsonType: 'array',
+                            minItems: 1,
+                            uniqueItems: true,
+                            items: {
+                                bsonType: 'object',
+                                required: [
+                                    'name',
+                                    'code'
+                                ],
+                                properties: {
+                                    name: {
+                                        bsonType: 'string'
+                                    },
+                                    code: {
+                                        bsonType: 'string'
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+
+                customer: {
+                    bsonType: "object",
+                    title: "Custormers object validation",
+                    required: ["username", "email", "password", "sex"],
+                    properties: {
+                        username: {
+                            bsonType: "string",
+                            maxLength: 50,
+                            description: "username must be shorter than 50 characters"
+                        },
+                        email: {
+                            bsonType: "string",
+                            maxLength: 100,
+                            description: "email must be shorter than 100 characters"
+                        },
+                        password: {
+                            bsonType: "string",
+                            maxLength: 255,
+                            description: "password must be shorter than 255 characters"
+                        },
+                        firstName: {
+                            bsonType: "string",
+                            maxLength: 255
+                        },
+                        lastName: {
+                            bsonType: "string",
+                            maxLength: 255
+                        },
+                        date_of_birth: {
+                            bsonType: "date"
+                        },
+                        phone: {
+                            bsonType: "string",
+                            maxLength: 20
+                        },
+                        pesel: {
+                            bsonType: "string",
+                            minLength: 11,
+                            maxLength: 11
+                        },
+                        address: {
+                            bsonType: "string",
+                            maxLength: 255
+                        },
+                        sex: {
+                            bsonType: "string",
+                            maxLength: 1
+                        }
+                    }
+                }
+            }
+        }
+    }
+})
+
+
+
