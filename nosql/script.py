@@ -38,6 +38,7 @@ db = client["car-salon-script"]
 
 
 def insert_customer(count: int):
+    print("insert customers")
     addresses = csv_to_list('../data/addresses.csv')
     date_of_births = DataGeneratorsNoSql.generate_dates(10, "1900-01-01", "2020-01-01")
     emails = csv_to_list('../data/emails.csv')
@@ -48,7 +49,9 @@ def insert_customer(count: int):
     phones = DataGeneratorsNoSql.generate_phones(10)
     sexes = ['f', 'm']
     usernames = csv_to_list('../data/usernames.csv')
-    # print(date_of_births)
+
+    customers = []
+
     for i in range(count):
         data = {
             'address': get_random(addresses),
@@ -65,12 +68,14 @@ def insert_customer(count: int):
 
         data = decide_to_remove_property(data, ["address", "date_of_birth", "firstName", "lastName", "pesel", "phone"],
                                          0.5)
-        customer_id = db.customers.insert_one(data).inserted_id
-        if i % 100 == 0:
-            print(i)
+
+        customers.append(data)
+
+    db.customers.insert_many(customers)
 
 
 def insert_employees(count: int):
+    print("insert employees")
     addresses = csv_to_list('../data/addresses.csv')
     date_of_births = DataGeneratorsNoSql.generate_dates(10, "1900-01-01", "2020-01-01")
     employment_dates = DataGeneratorsNoSql.generate_end_dates(date_of_births, 999)
@@ -84,7 +89,9 @@ def insert_employees(count: int):
     positions = csv_to_list('../data/PositionsNames.csv')
     sexes = ['f', 'm']
     usernames = csv_to_list('../data/usernames.csv')
-    # print(date_of_births)
+
+    employees = []
+
     for i in range(count):
         data = {
             'address': get_random(addresses),
@@ -104,12 +111,13 @@ def insert_employees(count: int):
         data = decide_to_remove_property(data, ["address", "date_of_birth", "dismissal_date", "firstName", "lastName",
                                                 "pesel",
                                                 "phone", ], 0.5)
-        employee_id = db.employees.insert_one(data).inserted_id
-        if i % 100 == 0:
-            print(i)
+        employees.append(data)
+
+    db.employees.insert_many(employees)
 
 
 def insert_cars(count: int):
+    print("insert cars")
     countries = list(set(csv_to_list("../data/Countries.csv")))
     brands = csv_to_list("../data/brands.csv")
     vins = generate_vins(100000)
@@ -135,8 +143,9 @@ def insert_cars(count: int):
     steering_wheels = csv_to_list('../data/steering_wheels.csv')
     equipment_elements_number = genereate_ints(5, 1, 10)
     equipment_names = csv_to_list('../data/CarEquipmentsNames.csv')
-
     equipment_codes = generate_equipment_codes(count)
+
+    cars = []
 
     for i in range(count):
         data = {
@@ -179,10 +188,9 @@ def insert_cars(count: int):
             "equipment": list(map(lambda name: {"name": name, "code": get_random(equipment_codes)},
                                   random.choices(equipment_names, k=get_random(equipment_elements_number))))
         }
+        cars.append(data)
 
-        cars_id = db.cars.insert_one(data).inserted_id
-        if i % 100 == 0:
-            print(i)
+    db.cars.insert_many(cars)
 
 
 def get_payments(count: int):
@@ -254,11 +262,17 @@ def get_services(count: int):
 
 
 def insert_orders(count: int):
+    print("insert orders")
     numbers = [str(x) for x in genereate_ints(10, 0, 1000000)]
     dates_of_application = generate_dates(count, '1967-1-1', '2020-1-1')
     dates_of_realisation = generate_end_dates(dates_of_application, 40)
     comments = ['lost in delivery', 'unavaliable at the moment', ' delivery from china', 'must be manufactured first']
     order_statuses = csv_to_list("../data/order_statuses.csv")
+    customers = list(db.customers.find())
+    cars = list(db.cars.find())
+
+
+    orders = []
 
     for i in range(count):
         data = {
@@ -268,11 +282,7 @@ def insert_orders(count: int):
             "payments": get_payments(random.randint(0, 5)),
             "car_accessories": get_car_accessories(random.randint(0, 5)),
             "services": get_services(random.randint(0, 5)),
-            "customer": list(db.customers.aggregate(
-                [{
-                    "$sample":
-                        {"size": 1}
-                }]))[0]
+            "customer": get_random(customers)
         }
 
         if is_present(0.8):
@@ -282,22 +292,21 @@ def insert_orders(count: int):
             data["comment"] = get_random(comments)
 
         if is_present(1):
-            data["cars"] = list(db.cars.aggregate(
-                [{
-                    "$sample":
-                        {"size": 1}
-                }]))[0]
+            data["cars"] = get_random(cars)
 
-        test_name_id = db.orders.insert_one(data).inserted_id
-        if i % 100 == 0:
-            print(i)
+        orders.append(data)
+
+    db.orders.insert_many(orders)
 
 
 def insert_test_drives(count: int):
+    print("insert test drives")
     start_times = generate_timestamps(count, '2015-1-1 12:00:00', '2022-1-1 12:00:00')
     end_times = generate_end_timestamps(start_times, max_minutes=180)
     employees = list(db.employees.find())
     comments = ['car crashed', 'driver caused accident', 'custromer didnt attend']
+
+    test_drives = []
 
     for i in range(count):
         data = {
@@ -318,13 +327,12 @@ def insert_test_drives(count: int):
         if random.random() < 0.3:
             data["comments"] = get_random(comments)
 
-        test_name_id = db.test_drives.insert_one(data).inserted_id
-        if i % 100 == 0:
-            print(i)
+        test_drives.append(data)
+    db.test_drives.insert_many(test_drives)
 
 
-insert_customer(50000)
-insert_employees(5000)
-insert_cars(25000)
-insert_orders(125000)
-insert_test_drives(50000)
+insert_customer(800000)
+insert_employees(500000)
+insert_cars(1000000)
+insert_orders(1000000)
+insert_test_drives(600000)
