@@ -25,8 +25,12 @@ db.createCollection('test-drives',{
         employee: {
           bsonType: "object",
           description: "'employee' must be an employee object and is required",
-          required: ["username", "email","password", "sex","employment_date","positionName"],
+          required: ["_id", "username", "email","password", "sex","employment_date","positionName"],
           properties: {
+            _id: {
+              bsonType: "objectId",
+              description: "'_id' is an objectId for the employee and is required"
+            },
             username: {
               bsonType: "string",
               maxLength: 50,
@@ -90,8 +94,12 @@ db.createCollection('test-drives',{
         customer: {
           bsonType: "object",
           description: "'customer' must be a customer object and is required",
-          required: ["username", "email","password", "sex"],
+          required: ["_id", "username", "email","password", "sex"],
           properties: {
+            _id: {
+              bsonType: "objectId",
+              description: "'_id' is an objectId for the customer and is required"
+            },
             username: {
               bsonType: "string",
               maxLength: 50,
@@ -142,6 +150,7 @@ db.createCollection('test-drives',{
           bsonType: "object",
           description: "'car' must be a car object and is required",
           required: [
+            "_id",
             'brand',
             'vin',
             'production_date',
@@ -156,6 +165,10 @@ db.createCollection('test-drives',{
             'equipment'
           ],
           properties: {
+            _id: {
+              bsonType: "objectId",
+              description: "'_id' is an objectId for the car and is required"
+            },
             origin_country: {
               bsonType: 'string'
             },
