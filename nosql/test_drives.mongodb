@@ -23,18 +23,341 @@ db.createCollection('test-drives',{
         },
 
         employee: {
-          bsonType: "objectId",
-          description: "'objectId' must be a reference to employee object and is required"
+          bsonType: "object",
+          description: "'employee' must be an employee object and is required",
+          required: ["_id", "username", "email","password", "sex","employment_date","positionName"],
+          properties: {
+            _id: {
+              bsonType: "objectId",
+              description: "'_id' is an objectId for the employee and is required"
+            },
+            username: {
+              bsonType: "string",
+              maxLength: 50,
+              description: "username must be shorter than 50 characters"
+            },
+            email: {
+              bsonType: "string",
+              maxLength: 100,
+              description: "email must be shorter than 100 characters"
+            },
+            password: {
+              bsonType: "string",
+              maxLength: 255,
+              description :"password must be shorter than 255 characters"
+            },
+            firstName: {
+              bsonType: "string",
+              maxLength: 255
+            },
+            lastName: {
+              bsonType: "string",
+              maxLength: 255
+            },
+            date_of_birth: {
+              bsonType: "date"
+            },
+            phone: {
+              bsonType: "string",
+              maxLength: 20
+            },
+            pesel: {
+              bsonType: "string",
+              minLength: 11,
+              maxLength: 11
+            },
+            address: {
+              bsonType: "string",
+              maxLength: 255
+            },
+            sex: {
+              bsonType: "string",
+              maxLength: 1,
+              description :"sex must be specified (m/f)"
+              
+            },
+            employment_date: {
+                bsonType: "date",
+                description :"employment_date must be specified"
+            },
+            dismissal_date: {
+                bsonType: "date"
+            },
+            positionName: {
+                bsonType: "string",
+                maxLength: 255,
+                description :"positionName must be specified"
+            }
+          }
         },
 
         customer: {
-          bsonType: "objectId",
-          description: "'objectId' must be a reference to customer object and is required"
+          bsonType: "object",
+          description: "'customer' must be a customer object and is required",
+          required: ["_id", "username", "email","password", "sex"],
+          properties: {
+            _id: {
+              bsonType: "objectId",
+              description: "'_id' is an objectId for the customer and is required"
+            },
+            username: {
+              bsonType: "string",
+              maxLength: 50,
+              description: "username must be shorter than 50 characters"
+            },
+            email: {
+              bsonType: "string",
+              maxLength: 100,
+              description: "email must be shorter than 100 characters"
+            },
+            password: {
+              bsonType: "string",
+              maxLength: 255,
+              description :"password must be shorter than 255 characters"
+            },
+            firstName: {
+              bsonType: "string",
+              maxLength: 255
+            },
+            lastName: {
+              bsonType: "string",
+              maxLength: 255
+            },
+            date_of_birth: {
+              bsonType: "date"
+            },
+            phone: {
+              bsonType: "string",
+              maxLength: 20
+            },
+            pesel: {
+              bsonType: "string",
+              minLength: 11,
+              maxLength: 11
+            },
+            address: {
+              bsonType: "string",
+              maxLength: 255
+            },
+            sex: {
+              bsonType: "string",
+              maxLength: 1
+            }
+          }
         },
 
         car: {
-          bsonType: "objectId",
-          description: "'objectId' must be a reference to car object and is required"
+          bsonType: "object",
+          description: "'car' must be a car object and is required",
+          required: [
+            "_id",
+            'brand',
+            'vin',
+            'production_date',
+            'mileage',
+            'status',
+            'engine',
+            'model',
+            'origin_country',
+            'body',
+            'varnish',
+            'steering_wheel',
+            'equipment'
+          ],
+          properties: {
+            _id: {
+              bsonType: "objectId",
+              description: "'_id' is an objectId for the car and is required"
+            },
+            origin_country: {
+              bsonType: 'string'
+            },
+            brand: {
+              bsonType: 'string'
+            },
+            vin: {
+              bsonType: 'string',
+              maxLength: 17
+            },
+            price: {
+              bsonType: 'double',
+              minimum: 0.0
+            },
+            production_date: {
+              bsonType: 'int',
+              minimum: 1900
+            },
+            mileage: {
+              bsonType: 'int',
+              minimum: 0
+            },
+            description: {
+              bsonType: 'string',
+              maxLength: 255
+            },
+            status: {
+              bsonType: 'string',
+              'enum': [
+                'Damaged',
+                'Not crashed',
+                'ASO Serviced',
+                'Historic'
+              ]
+            },
+            engine: {
+              bsonType: 'object',
+              required: [
+                'name',
+                'capacity',
+                'power'
+              ],
+              properties: {
+                name: {
+                  bsonType: 'string',
+                  maxLength: 50
+                },
+                capacity: {
+                  bsonType: 'double',
+                  minimum: 0.0
+                },
+                power: {
+                  bsonType: 'int',
+                  minimum: 0
+                },
+                torque: {
+                  bsonType: 'int',
+                  minimum: 0
+                },
+                cylinder_arrangement: {
+                  bsonType: 'string',
+                  'enum': [
+                    'Inline',
+                    'V-type',
+                    'W-type',
+                    'Rotary',
+                    'Boxer'
+                  ]
+                },
+                power_supply: {
+                  bsonType: 'string'
+                }
+              }
+            },
+            model: {
+              bsonType: 'object',
+              required: [
+                'name',
+                'brand',
+                'drivetrain',
+                'gearbox'
+              ],
+              properties: {
+                name: {
+                  bsonType: 'string'
+                },
+                description: {
+                  bsonType: 'string',
+                  maxLength: 255
+                },
+                brand: {
+                  bsonType: 'string'
+                },
+                drivetrain: {
+                  bsonType: 'string',
+                  'enum': [
+                    'AWD',
+                    'RWD',
+                    'FWD'
+                  ]
+                },
+                gearbox: {
+                  bsonType: 'object',
+                  required: [
+                    'type'
+                  ],
+                  properties: {
+                    type: {
+                      bsonType: 'string'
+                    },
+                    ratio: {
+                      bsonType: 'double'
+                    }
+                  }
+                }
+              }
+            },
+            body: {
+              bsonType: 'object',
+              required: [
+                'type'
+              ],
+              properties: {
+                type: {
+                  bsonType: 'string'
+                },
+                door_number: {
+                  bsonType: 'int',
+                  minimum: 0
+                },
+                seat_number: {
+                  bsonType: 'int',
+                  minimum: 0
+                }
+              }
+            },
+            varnish: {
+              bsonType: 'object',
+              required: [
+                'name',
+                'type',
+                'code'
+              ],
+              properties: {
+                name: {
+                  bsonType: 'string'
+                },
+                type: {
+                  bsonType: 'string',
+                  'enum': [
+                    'Glossy',
+                    'Matt',
+                    'Transparent',
+                    'Nontransparent with shade'
+                  ]
+                },
+                code: {
+                  bsonType: 'string'
+                }
+              }
+            },
+            steering_wheel: {
+              bsonType: 'string',
+              'enum': [
+                'right',
+                'left'
+              ]
+            },
+            equipment: {
+              bsonType: 'array',
+              minItems: 1,
+              uniqueItems: true,
+              items: {
+                bsonType: 'object',
+                required: [
+                  'name',
+                  'code'
+                ],
+                properties: {
+                  name: {
+                    bsonType: 'string'
+                  },
+                  code: {
+                    bsonType: 'string'
+                  }
+                }
+              }
+            }
+          }
         },
 
         comments: {

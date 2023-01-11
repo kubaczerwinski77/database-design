@@ -4,29 +4,92 @@
 // Use Ctrl+Space inside a snippet or a string literal to trigger completions.
 
 // Select the database to use.
-use('car_salon');
+use('car-salon-wdomini');
 
 db['test-drives'].insertOne({ 
   start_time: new Date('2022-12-21T09:00:00Z'), 
   end_time: new Date('2022-12-21T10:00:00Z'), 
-  customer: ObjectId("63a393acac52ab1ab8c6a6aa"), 
-  employee: ObjectId("63a38fc26396b541a20a39c2"),
-  car: ObjectId('63a444cb323d202f4799e945')
+  customer: {
+    '_id': ObjectId('63a393acac52ab1ab8c6a6aa'),
+    'username':"tomaszG",
+    'email': "tomasz@gollob.pl",
+    'password': "zmarzliklove",
+    'firstName': "Tomasz",
+    'lastName' : "Gollob",
+    'date_of_birth': new Date('2014-03-01T08:00:00Z'),
+    'phone': "1234557788",
+    'pesel': "01231301566",
+    'address': "pwr",
+    'sex': 'f'
+  }, 
+  employee: {
+    '_id': ObjectId('63a393acac52ab1ab8c6a6a9'),
+    "username":"emp1",
+    "email":"emp1@carsalon.com",
+    "password":"emp1",
+    "firstName":"janusz",
+    "lastName":"kolodziej",
+    "date_of_birth": new Date('2014-03-01T08:00:00Z'),
+    "phone":"123123123",
+    "pesel":"01291301566",
+    "address":"d21 pwr",
+    "sex":"m",
+    "employment_date": new Date('2014-03-01T08:00:00Z'),
+    "dismissal_date": new Date('2014-03-01T08:00:00Z'),
+    "positionName":"gornik"
+  },
+  car: {
+    '_id': ObjectId('63a444cb323d202f4799e945'),
+    origin_country: "Poland",
+    brand: "BMW",
+    vin: "23456787654323456",
+    price: 100000.50,
+    production_date: 23874623,
+    mileage: 235000,
+    description: "Great car",
+    status: "Not crashed",
+    engine: {
+        name: "5.0 V8",
+        capacity: 5.10,
+        power: 560,
+        torque: 700,
+        cylinder_arrangement: "V-type",
+        power_supply: "petrol"
+    },
+    model: {
+        name: "m2",
+        brand: "BMW",
+        drivetrain: "RWD",
+        gearbox: {
+            type: "automatic"
+        }
+    },
+    body: {
+        type: "coupe"
+    },
+    varnish: {
+        name: "light blue",
+        type: "Glossy",
+        code: '4H3K3'
+    },
+    steering_wheel: "right",
+    equipment: [{name: "radio", code: "3J356"}]
+  }
   });
 
 //inny
-db['test-drives'].insertOne({ 
-  start_time: new Date('2022-12-21T10:30:00Z'), 
-  end_time: new Date('2022-12-21T12:00:00Z'), 
-  customer: ObjectId("63a437f6d9cb176eb8b894d6"), 
-  employee: ObjectId("63a38fc26396b541a20a39c2"),
-  car: ObjectId('63a444cb323d202f4799e945')
-  });
+// db['test-drives'].insertOne({ 
+//   start_time: new Date('2022-12-21T10:30:00Z'), 
+//   end_time: new Date('2022-12-21T12:00:00Z'), 
+//   customer: ObjectId("63a437f6d9cb176eb8b894d6"), 
+//   employee: ObjectId("63a38fc26396b541a20a39c2"),
+//   car: ObjectId('63a444cb323d202f4799e945')
+//   });
 
-db['test-drives'].insertOne({ 
-  start_time: new Date('2022-12-22T07:30:00Z'), 
-  end_time: new Date('2022-12-22T07:35:00Z'), 
-  customer: ObjectId("63a393acac52ab1ab8c6a6aa"), 
-  employee: ObjectId("63a38fc26396b541a20a39c2"),
-  car: ObjectId('63a444cb323d202f4799e945')
-  });
+// db['test-drives'].insertOne({ 
+//   start_time: new Date('2022-12-22T07:30:00Z'), 
+//   end_time: new Date('2022-12-22T07:35:00Z'), 
+//   customer: ObjectId("63a393acac52ab1ab8c6a6aa"), 
+//   employee: ObjectId("63a38fc26396b541a20a39c2"),
+//   car: ObjectId('63a444cb323d202f4799e945')
+//   });
