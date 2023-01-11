@@ -13,6 +13,14 @@ def get_random(list_of_values):
 def pop_random(list_of_values):
     return list_of_values.pop(random.randrange(len(list_of_values)))
 
+
+def decide_to_remove_property(data: dict, properties: list[str], probability: float):
+    for property in properties:
+        if random.random() > probability:
+            del data[property]
+    return data
+
+
 def csv_to_list(filename):
     with open(filename, 'r', newline='', encoding='utf-8') as f:
         reader = csv.reader(f)
@@ -26,9 +34,9 @@ db = client["car-salon-kubaS"]
 customers = db.customers
 
 
-for customer in customers.find():
-    pprint(customer)
-
+# for customer in customers.find():
+#     pprint(customer)
+#
 
 # {'_id': ObjectId('63a3931e55919b8b57b9640f'),
 #  'address': 'pwr',
@@ -47,12 +55,12 @@ def insert_customer(count: int):
     emails = csv_to_list('../data/emails.csv')
     names = csv_to_list('../data/Names.csv')
     lastNames = csv_to_list('../data/Surnames.csv')
-    passwords = DataGeneratorsNoSql.generate_strings(10,8,16)
+    passwords = DataGeneratorsNoSql.generate_strings(10, 8, 16)
     pesels = DataGeneratorsNoSql.generate_pesels(10)
-    phones= DataGeneratorsNoSql.generate_phones(10)
-    sexes = ['f','m']
+    phones = DataGeneratorsNoSql.generate_phones(10)
+    sexes = ['f', 'm']
     usernames = csv_to_list('../data/usernames.csv')
-   # print(date_of_births)
+    # print(date_of_births)
     for i in range(count):
         data = {
             'address': get_random(addresses),
@@ -66,8 +74,8 @@ def insert_customer(count: int):
             'sex': get_random(sexes),
             'username': get_random(usernames)
         }
-        customer_id= customers.insert_one(data).inserted_id
+
+        data = decide_to_remove_property(data,["address","date_of_birth","firstName","lastName","pesel","phone"],0.5)
+        customer_id = customers.insert_one(data).inserted_id
         print(customer_id)
-
-
-insert_customer(10)
+insert_customer(3)

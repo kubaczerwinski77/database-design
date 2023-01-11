@@ -19,6 +19,12 @@ def csv_to_list(filename):
         reader = list(reader)
         return [item for sublist in reader for item in sublist]
 
+def decide_to_remove_property(data: dict, properties: list[str], probability: float):
+    for property in properties:
+        if random.random() > probability:
+            del data[property]
+    return data
+
 
 # create connection
 client = MongoClient("mongodb+srv://car-salon:LmrVociSmTXvTjFQ@cluster0.3tezxec.mongodb.net/test")
@@ -80,8 +86,11 @@ def insert_employees(count: int):
          'sex': get_random(sexes),
          'username': get_random(usernames)
         }
+        data = decide_to_remove_property(data,["address","date_of_birth","dismissal_date","firstName","lastName","pesel",
+                                               "phone",],0.5)
         employee_id = employees.insert_one(data).inserted_id
-        print(employee_id)
+        if i%100==0:
+            print(i)
 
 
-insert_employees(10)
+insert_employees(20000)
