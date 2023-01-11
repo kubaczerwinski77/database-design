@@ -4,7 +4,7 @@
 // Use Ctrl+Space inside a snippet or a string literal to trigger completions.
 
 // Select the database to use.
-use('car_salon');
+use('car-salon-wdomini');
 
 db['test-drives'].insertOne({ 
   start_time: new Date('2022-12-21T09:00:00Z'), 
