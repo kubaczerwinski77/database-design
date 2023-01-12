@@ -33,7 +33,7 @@ def csv_to_list(filename):
 
 
 # create connection
-client = MongoClient("mongodb+srv://car-salon:LmrVociSmTXvTjFQ@cluster0.3tezxec.mongodb.net/test")
+client = MongoClient("mongodb+srv://car-salon:LmrVociSmTXvTjFQ@cluster0.3tezxec.mongodb.net")
 db = client["car-salon-script"]
 
 
@@ -120,7 +120,7 @@ def insert_cars(count: int):
     print("insert cars")
     countries = list(set(csv_to_list("../data/Countries.csv")))
     brands = csv_to_list("../data/brands.csv")
-    vins = generate_vins(100000)
+    vins = generate_vins(1000000)
     dates = genereate_ints(count, 1990, 2020)
     prices = generate_floats(100000, 10000, 500000)
     mileages = genereate_ints(100000, 0, 200000)
@@ -189,6 +189,8 @@ def insert_cars(count: int):
                                   random.choices(equipment_names, k=get_random(equipment_elements_number))))
         }
         cars.append(data)
+        if i % 1000 == 0:
+            print(i)
 
     db.cars.insert_many(cars)
 
@@ -268,13 +270,29 @@ def insert_orders(count: int):
     dates_of_realisation = generate_end_dates(dates_of_application, 40)
     comments = ['lost in delivery', 'unavaliable at the moment', ' delivery from china', 'must be manufactured first']
     order_statuses = csv_to_list("../data/order_statuses.csv")
-    customers = list(db.customers.find())
-    cars = list(db.cars.find())
+    # customers = list(db.customers.find())
+    # cars = list(db.cars.find())
+
 
 
     orders = []
 
     for i in range(count):
+
+        if i % 10000 == 0:
+            print(i)
+            customers = list(db.customers.aggregate(
+                [{
+                    "$sample":
+                        {"size": 10000}}
+                ]))
+
+            cars = list(db.cars.aggregate(
+                [{
+                    "$sample":
+                        {"size": 10000}}
+                ]))
+
         data = {
             "number": get_random(numbers),
             "date_of_application": get_random(dates_of_application),
@@ -295,7 +313,6 @@ def insert_orders(count: int):
             data["cars"] = get_random(cars)
 
         orders.append(data)
-
     db.orders.insert_many(orders)
 
 
@@ -303,26 +320,54 @@ def insert_test_drives(count: int):
     print("insert test drives")
     start_times = generate_timestamps(count, '2015-1-1 12:00:00', '2022-1-1 12:00:00')
     end_times = generate_end_timestamps(start_times, max_minutes=180)
-    employees = list(db.employees.find())
     comments = ['car crashed', 'driver caused accident', 'custromer didnt attend']
 
     test_drives = []
 
+    employees = list(db.employees.aggregate(
+        [{
+            "$sample":
+                {"size": 10000}}
+        ]))
+
+    cars = list(db.cars.aggregate(
+        [{
+            "$sample":
+                {"size": 10000}}
+        ]))
+    customers = list(db.customers.aggregate(
+        [{
+            "$sample":
+                {"size": 10000}}
+        ]))
+
     for i in range(count):
+
+        if i % 10000 == 0:
+            print(i)
+            employees = list(db.employees.aggregate(
+                [{
+                    "$sample":
+                        {"size": 10000}}
+                ]))
+
+            cars = list(db.cars.aggregate(
+                [{
+                    "$sample":
+                        {"size": 10000}}
+                ]))
+            customers = list(db.customers.aggregate(
+                [{
+                    "$sample":
+                        {"size": 10000}}
+                ]))
+
         data = {
             "start_time": start_times[i],
             "end_time": end_times[i],
             "employee": get_random(employees),
-            "customer": list(db.customers.aggregate(
-                [{
-                    "$sample":
-                        {"size": 1}}
-                ]))[0],
-            "car": list(db.cars.aggregate(
-                [{
-                    "$sample":
-                        {"size": 1}}
-                ]))[0]
+            "customer": get_random(customers),
+            "car": get_random(cars)
         }
         if random.random() < 0.3:
             data["comments"] = get_random(comments)
@@ -334,5 +379,5 @@ def insert_test_drives(count: int):
 insert_customer(800000)
 insert_employees(500000)
 insert_cars(1000000)
-insert_orders(1000000)
-insert_test_drives(600000)
+insert_orders(500000)
+insert_test_drives(100000)
