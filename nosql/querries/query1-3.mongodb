@@ -1,0 +1,24 @@
+use('car-salon-script');
+
+// Query 1 - customers older than 50
+// db.customers.find({ 
+//   $expr: { 
+//     $gt: [ { 
+//       $dateDiff: {
+//         startDate: "$date_of_birth",
+//         endDate: "$$NOW",
+//         unit: "year"
+//       }
+//     }, 50 ]
+//     } 
+//   }
+// );
+
+// Query 2 - customers with orders that have 'awaiting payment' status
+// db.orders.find({
+//   "order_status": "awaiting payment"
+// }, {
+//   "_id": 0,
+//   "customer": 1
+// });
+
