@@ -73,8 +73,8 @@ db.orders.find({
     },
   ]
 
-// Query 7
 
+// Query 7 - top 5 najczęściej sprzedawanych marek samochodów
 db.orders.aggregate([
   {
       $group: {
@@ -94,6 +94,55 @@ db.orders.aggregate([
   }
 ])
 
+// Query 8 - klienci, którzy zrezygnowali z zamówienia złożonego w ostatnich 5 latach
+db.orders.find({
+  "order_status": "cancelled",
+  $expr: {
+    $lt: [ {
+      $dateDiff: {
+        startDate: "$date_of_application",
+        endDate: "$$NOW",
+        unit: "year"
+      }
+    }, 5 ]
+  }
+},
+{
+  "_id": 1,
+  "customer.username": 1,
+  "customer.email": 1
+})
+
+// Query 10 - pracownicy o stażu dłuższym niż 10 lat pogrupowani ze względu na stanowiska
+db.employees.aggregate(
+  {
+    $match: {
+        "dismissal_date": {
+            "$exists": false
+        },
+        $expr: {
+            $gt: [ {
+              $dateDiff: {
+                startDate: "$employment_date",
+                endDate: "$$NOW",
+                unit: "year"
+              }
+            }, 10 ]
+        }
+    },
+  },
+  {
+    $group: {
+      _id: "$positionName",
+      count: {
+        $count: {},
+      },
+    }
+  }
+)
+
+
+
 
 
 // Query 12
@@ -108,9 +157,9 @@ db.orders.aggregate([
         $group: {
         _id: "$customer.username",
         count: {
-          $count: {},
-        },
-      },
+          $count: {}
+        }
+      }
     },
     {
       $sort: {
@@ -121,3 +170,27 @@ db.orders.aggregate([
       $limit: 5
     }
   ])
+
+  // Query 15
+
+
+db.orders.aggregate([
+    {
+      $group: {
+        _id: "$customer.sex",
+        avgTime: { $avg: $dateDiff: {
+                startDate: "$start_time",
+                endDate: "$end_time",
+                unit: "minute"
+      }
+       }
+      },
+    },
+    {
+      $project: {
+           customer.sex: 1,
+           avgTime
+          _id: 0
+      }
+    }
+ ])
