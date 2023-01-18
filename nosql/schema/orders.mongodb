@@ -1,3 +1,6 @@
+const database = 'car_salon';
+use(database);
+
 db.createCollection('orders', {
     validator: {
         $jsonSchema: {
@@ -78,8 +81,12 @@ db.createCollection('orders', {
                     description: "Array of car accessories objects",
                     items: {
                         bsonType: "object",
-                        required: ["name", "registration_number", "price_per_unit", "accessory_type", "amount"],
+                        required: ["_id", "name", "registration_number", "price_per_unit", "accessory_type", "amount"],
                         properties: {
+                            _id: {
+                            bsonType: "objectId",
+                            description: "'_id' is an objectId for the car_accessory and is required"
+                            },
                             name: {
                                 bsonType: "string",
                                 description: "'name' must be a string and is required"
@@ -99,7 +106,6 @@ db.createCollection('orders', {
                                     "Accessory",
                                     "Tire",
                                     "Part"
-
                                 ],
                                 description: "'accessory_type' must be a string and is required"
                             },
@@ -121,8 +127,12 @@ db.createCollection('orders', {
                     description: "Array of services objects",
                     items: {
                         bsonType: "object",
-                        required: ["name", "price"],
+                        required: ["_id", "name", "price"],
                         properties: {
+                            _id: {
+                            bsonType: "objectId",
+                            description: "'_id' is an objectId for the service and is required"
+                            },
                             name: {
                                 bsonType: "string",
                                 "enum": [
