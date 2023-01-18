@@ -1,7 +1,4 @@
 const database = 'car_salon';
-const collection = 'NEW_COLLECTION_NAME';
-
-// The current database to use.
 use(database);
 
 
