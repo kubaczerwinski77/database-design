@@ -34,7 +34,7 @@ def csv_to_list(filename):
 
 # create connection
 client = MongoClient("mongodb+srv://car-salon:LmrVociSmTXvTjFQ@cluster0.3tezxec.mongodb.net")
-db = client["car-salon-script"]
+db = client["car_salon"]
 
 
 def insert_customer(count: int):
@@ -223,7 +223,7 @@ def get_payments(count: int):
 def insert_car_accessories(count: int):
     print("insert car accessories")
     names = csv_to_list("../data/AccessoryNameParts.csv")
-    registration_numbers = [str(x) for x in genereate_ints(10, 0, 1000000)]
+    registration_numbers = [str(x) for x in genereate_ints(50000, 0, 1000000)]
     prices_per_unit = generate_floats(10, 0.0, 500.0)
     amounts = genereate_ints(10, 0, 20)
     accessory_types = csv_to_list("../data/AccesoryTypes.csv")
@@ -336,7 +336,7 @@ def insert_test_drives(count: int):
     print("insert test drives")
     start_times = generate_timestamps(count, '2015-1-1 12:00:00', '2022-1-1 12:00:00')
     end_times = generate_end_timestamps(start_times, max_minutes=180)
-    comments = ['car crashed', 'driver caused accident', 'custromer didnt attend']
+    comments = ['car crashed', 'driver caused accident', 'customer didnt attend']
 
     test_drives = []
 
@@ -359,7 +359,7 @@ def insert_test_drives(count: int):
 
     for i in range(count):
 
-        if i % 10000 == 0:
+        if i % 1000 == 0:
             print(i)
             employees = list(db.employees.aggregate(
                 [{
@@ -392,8 +392,12 @@ def insert_test_drives(count: int):
     db.test_drives.insert_many(test_drives)
 
 
-insert_customer(800000)
-insert_employees(500000)
-insert_cars(1000000)
-insert_orders(500000)
-insert_test_drives(100000)
+# insert_customer(50000)
+# insert_employees(50000)
+# insert_services(50000)
+# insert_car_accessories(50000)
+# insert_cars(50000)
+insert_orders(50000)
+insert_test_drives(50000)
+
+
