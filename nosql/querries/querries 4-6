@@ -1,0 +1,49 @@
+4: (to jest pipeline czy coś takiego)
+
+[{
+ 
+    $group: {
+        _id: {
+            origin_country: "$origin_country"
+        },
+    },
+}, ]
+
+5:
+
+
+
+
+6:
+[
+    {
+      /**
+       * path: Path to the array field.
+       * includeArrayIndex: Optional name for index.
+       * preserveNullAndEmptyArrays: Optional
+       *   toggle to unwind null and empty values.
+       */
+      $unwind: {
+        path: "$services",
+      },
+    },
+    {
+      /**
+       * _id: The id of the group.
+       * fieldN: The first field name.
+       */
+      $group: {
+        _id: "$services.name",
+        count: { $count: {} },
+      },
+    },
+    {
+      /**
+       * Provide any number of field/order pairs.
+       */
+      $sort: {
+        count: -1,
+      },
+    },
+  ]
+
