@@ -1,17 +1,20 @@
-4: (to jest pipeline czy coś takiego)
+//4:  . Kraje pochodzenia, z których są auta w salonie
+use('car_salon');
 
-[{
+db.cars.aggregate([{
  
     $group: {
         _id: {
             origin_country: "$origin_country"
         },
     },
-}, ]
+}, ])
 
-5:
+// ilośc samochodów ze wzgledu na statusy (z 5. procent konkretnych statusów samochodów w stosunku
+// do wszystkich dostępnych (x% bezwypadkowych, y% pierwszy właściciel itd.))
 
-[{
+
+db.cars.aggregate([{
     /**
      * _id: The id of the group.
      * fieldN: The first field name.
@@ -22,39 +25,26 @@
             $count: {}
         },
     },
-}, ]
+}, ])
 
 
-6:
-[
+//6: zestawienie najrzadziej wybieranych usług
+db.cars.aggregate([
     {
-      /**
-       * path: Path to the array field.
-       * includeArrayIndex: Optional name for index.
-       * preserveNullAndEmptyArrays: Optional
-       *   toggle to unwind null and empty values.
-       */
       $unwind: {
         path: "$services",
       },
     },
     {
-      /**
-       * _id: The id of the group.
-       * fieldN: The first field name.
-       */
       $group: {
         _id: "$services.name",
         count: { $count: {} },
       },
     },
     {
-      /**
-       * Provide any number of field/order pairs.
-       */
       $sort: {
         count: -1,
       },
     },
-  ]
+  ])
 
