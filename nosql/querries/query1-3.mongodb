@@ -1,4 +1,4 @@
-use('car-salon-script');
+use('car_salon');
 
 // Query 1 - customers older than 50
 // db.customers.find({ 
@@ -14,11 +14,30 @@ use('car-salon-script');
 //   }
 // );
 
-// Query 2 - customers with orders that have 'awaiting payment' status
+//Query 2 - customers with orders that have 'awaiting payment' status
 // db.orders.find({
 //   "order_status": "awaiting payment"
 // }, {
 //   "_id": 0,
 //   "customer": 1
 // });
+
+//Query 3 - car accessories that were not used in any order
+// db.car_accessories.aggregate([
+//   {
+//     $lookup:
+//       {
+//         from: "orders",
+//         localField: "_id",
+//         foreignField: "car_accessories._id",
+//         as: "orders"
+//       }
+//   },
+//   {
+//     $match:
+//       {
+//         "orders": { $eq: [] }
+//       }
+//   }
+// ]);
 
