@@ -22,7 +22,7 @@ use('car_salon');
 //   "customer": 1
 // });
 
-//Query 3 - car accessories that were not used in any order
+// Query 3 - car accessories that were not used in any order
 // db.car_accessories.aggregate([
 //   {
 //     $lookup:

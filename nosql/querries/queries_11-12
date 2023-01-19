@@ -1,26 +1,51 @@
 // Query 12
 
 db.orders.aggregate([
-    {
-        $match: {
-             payments: []
-        },
-    },
-    {
-        $group: {
-        _id: "$customer.username",
-        count: {
-          $count: {},
-        },
-      },
-    },
-    {
-      $sort: {
-        count: -1
+  {
+      $match: {
+           payments: []
       }
-    },
-    {
-      $limit: 5
+  },
+  {
+      $group: {
+      _id: "$customer.username",
+      count: {
+        $count: {}
+      }
     }
-  ])
+  },
+  {
+    $sort: {
+      count: -1
+    }
+  },
+  {
+    $limit: 5
+  }
+]);
 
+// Query 15
+
+
+db.test_drives.aggregate([
+
+  {
+      $project: {
+          "customer.sex": 1,
+          duration: {
+              $dateDiff: {
+                startDate: "$start_time",
+                endDate: "$end_time",
+                unit: "minute"
+    }
+          }
+      }
+  },
+  {
+      $group: {
+          _id: "$customer.sex",
+          avgDuration: { $avg: "$duration" }
+      }
+  }
+
+]);

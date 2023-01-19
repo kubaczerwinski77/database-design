@@ -11,7 +11,7 @@ addback=True
 
 
 # connection to database
-conn = psycopg2.connect("dbname=carsalon2 user=postgres password=admin")
+conn = psycopg2.connect("dbname=car_salon user=postgres password=postgres host=localhost")
 cur = conn.cursor()
 
 
@@ -122,7 +122,7 @@ def insert(table_name, count, **kwargs):
 
 # AccessoryTypes
 def insert_accessory_type():
-    name = csv_to_list('../data/AccesoryTypes.csv')
+    name = csv_to_list('data/AccesoryTypes.csv')
     count = len(name)
     uuid = DataGenerators.generate_uuids(count)
     insert('AccessoryTypes', count, UNIQUE_id=uuid, UNIQUE_name=name)
@@ -130,7 +130,7 @@ def insert_accessory_type():
 
 # Brands
 def insert_brands():
-    names = csv_to_list('../data/brands.csv')
+    names = csv_to_list('data/brands.csv')
     count = len(names)
     uuids = DataGenerators.generate_uuids(count)
     insert('Brands', count, UNIQUE_id=uuids, UNIQUE_name=names)
@@ -138,7 +138,7 @@ def insert_brands():
 
 # CarAccessories
 def insert_car_accessories(count):
-    names = csv_to_list('../data/AccessoryNameParts.csv')
+    names = csv_to_list('data/AccessoryNameParts.csv')
     uuids = DataGenerators.generate_uuids(count)
     registrations = DataGenerators.generate_registration_numbers(count)
     prices = DataGenerators.generate_floats(count, 10, 1000)
@@ -151,7 +151,7 @@ def insert_car_accessories(count):
 
 # CarBodies
 def insert_car_bodies(count):
-    types = csv_to_list('../data/CarBodyTypes.csv')
+    types = csv_to_list('data/CarBodyTypes.csv')
     uuids = DataGenerators.generate_uuids(count)
     doors = [3, 5]
     seats = [2, 4, 5, 7]
@@ -161,7 +161,7 @@ def insert_car_bodies(count):
 
 # CarDrivetrains
 def insert_car_drivetrains():
-    types = csv_to_list('../data/drivetrains.csv')
+    types = csv_to_list('data/drivetrains.csv')
     count = len(types)
     uuids = DataGenerators.generate_uuids(count)
     insert('CarDrivetrains', count, UNIQUE_id=uuids, UNIQUE_type=types)
@@ -170,7 +170,7 @@ def insert_car_drivetrains():
 # CarEquipments
 def insert_car_equipments(count):
     uuids = DataGenerators.generate_uuids(count)
-    names = csv_to_list('../data/CarEquipmentsNames.csv')
+    names = csv_to_list('data/CarEquipmentsNames.csv')
     prices = DataGenerators.generate_floats(count, 1000, 10000)
     codes = DataGenerators.generate_equipment_codes(count)
     insert('CarEquipments', count, UNIQUE_id=uuids, name=names
@@ -179,7 +179,7 @@ def insert_car_equipments(count):
 
 # CarPowerSupplies
 def insert_car_power_supplies():
-    types = csv_to_list('../data/CarPowerSuppliesTypes.csv')
+    types = csv_to_list('data/CarPowerSuppliesTypes.csv')
     count = len(types)
     uuids = DataGenerators.generate_uuids(count)
     insert('CarPowerSupplies', count, UNIQUE_id=uuids,
@@ -188,7 +188,7 @@ def insert_car_power_supplies():
 
 # CarStatuses
 def insert_car_statuses():
-    statuses = csv_to_list('../data/CarStatusesTypes.csv')
+    statuses = csv_to_list('data/CarStatusesTypes.csv')
     count = len(statuses)
     uuids = DataGenerators.generate_uuids(count)
     insert('CarStatuses', count, UNIQUE_id=uuids, UNIQUE_status=statuses)
@@ -202,7 +202,7 @@ def insert_engines(count):
     capacities = DataGenerators.generate_floats(count, 600, 7000)
     powers = DataGenerators.genereate_ints(count, 100, 1000)
     torques = DataGenerators.genereate_ints(count, 50, 500)
-    cylinders = csv_to_list('../data/cylinder_arrangement.csv')
+    cylinders = csv_to_list('data/cylinder_arrangement.csv')
     fk_power_supplies = get_foreign_keys('CarPowerSupplies', cur)
     insert('Engines', count, UNIQUE_id=uuids, name=names, capacity=capacities,
            power=powers, torque=torques, cylinder_arrangement=cylinders,
@@ -239,7 +239,7 @@ def insert_insurance_types():
 
 
 def insert_models():
-    names = list(set(csv_to_list('../data/Models (1).csv')))
+    names = list(set(csv_to_list('data/Models (1).csv')))
     count = len(names)
     uuids = DataGenerators.generate_uuids(count)
     descriptions = ['fast coupe', 'sport sedan', 'racecar', 'family car']
@@ -251,14 +251,14 @@ def insert_models():
 
 
 def insert_order_statuses():
-    statuses = csv_to_list('../data/order_statuses.csv')
+    statuses = csv_to_list('data/order_statuses.csv')
     count = len(statuses)
     uuids = DataGenerators.generate_uuids(count)
     insert('OrderStatuses', count, UNIQUE_id=uuids, UNIQUE_status=statuses)
 
 
 def insert_origin_countries():
-    names = csv_to_list('../data/Countries.csv')
+    names = csv_to_list('data/Countries.csv')
     count = len(names)
     uuids = DataGenerators.generate_uuids(count)
     insert('OriginCountries', count, UNIQUE_id=uuids, UNIQUE_name=names)
@@ -266,7 +266,7 @@ def insert_origin_countries():
 
 # positions
 def insert_positions():
-    names = list(set(csv_to_list('../data/PositionsNames.csv')))
+    names = list(set(csv_to_list('data/PositionsNames.csv')))
     count = len(names)
     uuids = DataGenerators.generate_uuids(count)
     insert('Positions', count, UNIQUE_id=uuids, UNIQUE_name=names)
@@ -274,7 +274,7 @@ def insert_positions():
 
 # Services
 def insert_services():
-    names = csv_to_list('../data/service_names.csv')
+    names = csv_to_list('data/service_names.csv')
     count = len(names)
     uuids = DataGenerators.generate_uuids(count)
     descriptions = ['yearly', 'free', 'varranty']
@@ -285,7 +285,7 @@ def insert_services():
 
 # Sexes
 def insert_sexes():
-    names = csv_to_list('../data/sexes.csv')
+    names = csv_to_list('data/sexes.csv')
     count = len(names)
     uuids = DataGenerators.generate_uuids(count)
     insert('Sexes', count, UNIQUE_id=uuids, UNIQUE_symbol=names)
@@ -293,7 +293,7 @@ def insert_sexes():
 
 # SteeringWheels
 def insert_steering_wheels():
-    types = csv_to_list('../data/steering_wheels.csv')
+    types = csv_to_list('data/steering_wheels.csv')
     count = len(types)
     uuids = DataGenerators.generate_uuids(count)
     insert('SteeringWheels', count, UNIQUE_id=uuids, UNIQUE_type=types)
@@ -305,12 +305,12 @@ def insert_users(count):
     usernames = DataGenerators.generate_strings(count, 10, 20)
     emails = DataGenerators.generate_strings(count, 10, 20)
     passwords = DataGenerators.generate_strings(count, 6, 19)
-    first_names = csv_to_list('../data/Names.csv')
-    last_names = csv_to_list('../data/Surnames.csv')
+    first_names = csv_to_list('data/Names.csv')
+    last_names = csv_to_list('data/Surnames.csv')
     births = DataGenerators.generate_dates(count, '1967-1-1', '2000-1-1')
     phones = DataGenerators.generate_phones(count)
     pesels = DataGenerators.generate_pesels(count)
-    addresses = csv_to_list('../data/addresses.csv')
+    addresses = csv_to_list('data/addresses.csv')
     fk_sexes = get_foreign_keys('Sexes', cur)
     insert('Users', count, UNIQUE_id=uuids, UNIQUE_username=usernames, UNIQUE_email=emails,
            password=passwords, first_name=first_names, last_name=last_names
@@ -320,7 +320,7 @@ def insert_users(count):
 
 # VarnishTYpes
 def insert_varnish_types():
-    types = csv_to_list('../data/VarnishTypes.csv')
+    types = csv_to_list('data/VarnishTypes.csv')
     count = len(types)
     uuids = DataGenerators.generate_uuids(count)
     insert('VarnishTypes', count, UNIQUE_id=uuids, UNIQUE_type=types)
@@ -328,8 +328,8 @@ def insert_varnish_types():
 
 # Varnishes
 def insert_varnishes():
-    names = csv_to_list('../data/Colors.csv')
-    codes = csv_to_list('../data/ColorCodes.csv')
+    names = csv_to_list('data/Colors.csv')
+    codes = csv_to_list('data/ColorCodes.csv')
     count = len(codes)
     uuids = DataGenerators.generate_uuids(count)
     fk_varnish_types = get_foreign_keys('VarnishTypes', cur)
@@ -505,19 +505,19 @@ def run():
     insert_services()
     insert_sexes()
     insert_steering_wheels()
-    insert_users(40000)
+    insert_users(50000)
     insert_varnish_types()
     insert_varnishes()
-    insert_customers(39000)
+    insert_customers(50000)
     insert_employees(2000)
     insert_cars(50000)
-    insert_configurations(30000)
-    insert_orders(30001)
-    insert_order_positions(30000)
+    insert_configurations(50000)
+    insert_orders(50000)
+    insert_order_positions(40000)
     print(ORDERS_WITH_CARS)
     insert_insurances(len(ORDERS_WITH_CARS))
     insert_payments(30000)
-    insert_test_drives(5000)
+    insert_test_drives(30000)
 
 ##comment
 run()
