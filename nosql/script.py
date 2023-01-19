@@ -34,7 +34,7 @@ def csv_to_list(filename):
 
 # create connection
 client = MongoClient("mongodb+srv://car-salon:LmrVociSmTXvTjFQ@cluster0.3tezxec.mongodb.net")
-db = client["car-salon-script"]
+db = client["car_salon"]
 
 
 def insert_customer(count: int):
@@ -220,14 +220,15 @@ def get_payments(count: int):
     return payments_list
 
 
-def get_car_accessories(count: int):
+def insert_car_accessories(count: int):
+    print("insert car accessories")
     names = csv_to_list("../data/AccessoryNameParts.csv")
-    registration_numbers = [str(x) for x in genereate_ints(10, 0, 1000000)]
+    registration_numbers = [str(x) for x in genereate_ints(50000, 0, 1000000)]
     prices_per_unit = generate_floats(10, 0.0, 500.0)
     amounts = genereate_ints(10, 0, 20)
     accessory_types = csv_to_list("../data/AccesoryTypes.csv")
 
-    car_accessories_list = []
+    car_accessories = []
 
     for i in range(count):
         data = {
@@ -237,17 +238,19 @@ def get_car_accessories(count: int):
             "amount": get_random(amounts),
             "accessory_type": get_random(accessory_types)
         }
-        car_accessories_list.append(data)
+        car_accessories.append(data)
+        if i % 1000 == 0:
+            print(i)
 
-    return car_accessories_list
+    db.car_accessories.insert_many(car_accessories)
 
 
-def get_services(count: int):
+def insert_services(count: int):
     names = csv_to_list("../data/service_names.csv")
     descriptions = ['yearly', 'free', 'varranty']
     prices = generate_floats(10, 0.0, 500.0)
 
-    services_list = []
+    services = []
 
     for i in range(count):
         data = {
@@ -258,9 +261,11 @@ def get_services(count: int):
         if is_present(0.8):
             data["description"] = get_random(descriptions)
 
-        services_list.append(data)
+        services.append(data)
+        if i % 1000 == 0:
+            print(i)
 
-    return services_list
+    db.services.insert_many(services)
 
 
 def insert_orders(count: int):
@@ -272,8 +277,6 @@ def insert_orders(count: int):
     order_statuses = csv_to_list("../data/order_statuses.csv")
     # customers = list(db.customers.find())
     # cars = list(db.cars.find())
-
-
 
     orders = []
 
@@ -292,14 +295,27 @@ def insert_orders(count: int):
                     "$sample":
                         {"size": 10000}}
                 ]))
+            
+            car_accessories = list(db.car_accessories.aggregate(
+                [{
+                    "$sample":
+                        {"size": 10000}}
+                ]))
+            
+            services = list(db.services.aggregate(
+                [{
+                    "$sample":
+                        {"size": 10000}}
+                ]))
+
 
         data = {
             "number": get_random(numbers),
             "date_of_application": get_random(dates_of_application),
             "order_status": get_random(order_statuses),
             "payments": get_payments(random.randint(0, 5)),
-            "car_accessories": get_car_accessories(random.randint(0, 5)),
-            "services": get_services(random.randint(0, 5)),
+            "car_accessories": random.choices(car_accessories, k=random.randint(0, 5)),
+            "services": random.choices(services, k=random.randint(0, 5)),
             "customer": get_random(customers)
         }
 
@@ -320,7 +336,7 @@ def insert_test_drives(count: int):
     print("insert test drives")
     start_times = generate_timestamps(count, '2015-1-1 12:00:00', '2022-1-1 12:00:00')
     end_times = generate_end_timestamps(start_times, max_minutes=180)
-    comments = ['car crashed', 'driver caused accident', 'custromer didnt attend']
+    comments = ['car crashed', 'driver caused accident', 'customer didnt attend']
 
     test_drives = []
 
@@ -343,7 +359,7 @@ def insert_test_drives(count: int):
 
     for i in range(count):
 
-        if i % 10000 == 0:
+        if i % 1000 == 0:
             print(i)
             employees = list(db.employees.aggregate(
                 [{
@@ -376,8 +392,12 @@ def insert_test_drives(count: int):
     db.test_drives.insert_many(test_drives)
 
 
-insert_customer(800000)
-insert_employees(500000)
-insert_cars(1000000)
-insert_orders(500000)
-insert_test_drives(100000)
+# insert_customer(50000)
+# insert_employees(50000)
+# insert_services(50000)
+# insert_car_accessories(50000)
+# insert_cars(50000)
+insert_orders(50000)
+insert_test_drives(50000)
+
+

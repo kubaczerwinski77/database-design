@@ -1,0 +1,196 @@
+// Query 1 - customers older than 50
+db.customers.find({
+  $expr: {
+    $gt: [ {
+      $dateDiff: {
+        startDate: "$date_of_birth",
+        endDate: "$$NOW",
+        unit: "year"
+      }
+    }, 50 ]
+    }
+  }
+);
+
+// Query 2 - customers with orders that have 'awaiting payment' status
+db.orders.find({
+  "order_status": "awaiting payment"
+}, {
+  "_id": 0,
+  "customer": 1
+});
+
+// Query 3:
+
+
+
+// Query 4: (to jest pipeline czy coś takiego)
+
+[{
+
+    $group: {
+        _id: {
+            origin_country: "$origin_country"
+        },
+    },
+}, ]
+
+// Query 5:
+
+
+
+
+// Query 6:
+[
+    {
+      /**
+       * path: Path to the array field.
+       * includeArrayIndex: Optional name for index.
+       * preserveNullAndEmptyArrays: Optional
+       *   toggle to unwind null and empty values.
+       */
+      $unwind: {
+        path: "$services",
+      },
+    },
+    {
+      /**
+       * _id: The id of the group.
+       * fieldN: The first field name.
+       */
+      $group: {
+        _id: "$services.name",
+        count: { $count: {} },
+      },
+    },
+    {
+      /**
+       * Provide any number of field/order pairs.
+       */
+      $sort: {
+        count: -1,
+      },
+    },
+  ]
+
+
+// Query 7 - top 5 najczęściej sprzedawanych marek samochodów
+db.orders.aggregate([
+  {
+      $group: {
+      _id: "$cars.brand",
+      count: {
+        $count: {},
+      },
+    },
+  },
+  {
+    $sort: {
+      count: -1
+    }
+  },
+  {
+    $limit: 5
+  }
+])
+
+// Query 8 - klienci, którzy zrezygnowali z zamówienia złożonego w ostatnich 5 latach
+db.orders.find({
+  "order_status": "cancelled",
+  $expr: {
+    $lt: [ {
+      $dateDiff: {
+        startDate: "$date_of_application",
+        endDate: "$$NOW",
+        unit: "year"
+      }
+    }, 5 ]
+  }
+},
+{
+  "_id": 1,
+  "customer.username": 1,
+  "customer.email": 1
+})
+
+// Query 10 - pracownicy o stażu dłuższym niż 10 lat pogrupowani ze względu na stanowiska
+db.employees.aggregate(
+  {
+    $match: {
+        "dismissal_date": {
+            "$exists": false
+        },
+        $expr: {
+            $gt: [ {
+              $dateDiff: {
+                startDate: "$employment_date",
+                endDate: "$$NOW",
+                unit: "year"
+              }
+            }, 10 ]
+        }
+    },
+  },
+  {
+    $group: {
+      _id: "$positionName",
+      count: {
+        $count: {},
+      },
+    }
+  }
+)
+
+
+
+
+
+// Query 12
+
+db.orders.aggregate([
+    {
+        $match: {
+             payments: []
+        },
+    },
+    {
+        $group: {
+        _id: "$customer.username",
+        count: {
+          $count: {}
+        }
+      }
+    },
+    {
+      $sort: {
+        count: -1
+      }
+    },
+    {
+      $limit: 5
+    }
+  ])
+
+  // Query 15
+
+
+db.orders.aggregate([
+    {
+      $group: {
+        _id: "$customer.sex",
+        avgTime: { $avg: $dateDiff: {
+                startDate: "$start_time",
+                endDate: "$end_time",
+                unit: "minute"
+      }
+       }
+      },
+    },
+    {
+      $project: {
+           customer.sex: 1,
+           avgTime
+          _id: 0
+      }
+    }
+ ])

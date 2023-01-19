@@ -1,0 +1,79 @@
+const database = 'car-salon-script';
+
+// The current database to use.
+use(database);
+
+db.createCollection('services',{
+  validator:  {
+    $jsonSchema:{
+      bsonType: "object",
+      title: "services object validation",
+      required: ['name', 'price'],
+          properties: {
+            name: {
+              bsonType: 'string',
+              'enum': [
+                'service',
+                'repair',
+                'washing',
+                'detailing',
+                'cleaning'
+              ],
+              description: '\'name\' must be a string and is required'
+            },
+            description: {
+              bsonType: 'string',
+              description: '\'description\' must be a string and is not required'
+            },
+            price: {
+              bsonType: 'double',
+              description: '\'price\' must be a double and is required',
+              minimum: 0
+            }
+          }
+    }
+  }
+});
+
+db.createCollection('car_accessories',{
+  validator:  {
+    $jsonSchema:{
+      bsonType: "object",
+      title: "car accessories object validation",
+      required: ['name', 'registration_number', 'price_per_unit', 'accessory_type', 'amount'],
+          properties: {
+            name: {
+              bsonType: 'string',
+              description: '\'name\' must be a string and is required'
+            },
+            registration_number: {
+              bsonType: 'string',
+              description: '\'registration_number\' must be a string and is required'
+            },
+            price_per_unit: {
+              bsonType: 'double',
+              description: '\'price_per_unit\' must be a double and is required',
+              minimum: 0
+            },
+            accessory_type: {
+              bsonType: 'string',
+              'enum': [
+                'Accessory',
+                'Tire',
+                'Part'
+              ],
+              description: '\'accessory_type\' must be a string and is required'
+            },
+            amount: {
+              bsonType: 'int',
+              description: '\'amount\' must be a int and is required',
+              minimum: 0
+            },
+            comments: {
+              bsonType: 'string',
+              description: '\'comments\' must be a string and is not required'
+            }
+          }
+    }
+  }
+});
