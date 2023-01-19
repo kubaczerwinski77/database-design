@@ -11,7 +11,18 @@
 
 5:
 
-
+[{
+    /**
+     * _id: The id of the group.
+     * fieldN: The first field name.
+     */
+    $group: {
+        _id: "$status",
+        count: {
+            $count: {}
+        },
+    },
+}, ]
 
 
 6:
